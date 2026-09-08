@@ -36,6 +36,17 @@ public sealed class AuditRepository(CafeDatabase database)
             .Select(r => r.ToDomain()).ToList();
     }
 
+    /// <summary>
+    /// Records a wrong admin PIN. One of the very few things written straight to the audit
+    /// log rather than alongside a change, because the point is that nothing changed.
+    /// </summary>
+    public void WriteFailedPin(int consecutiveFailures)
+    {
+        using var connection = database.Open();
+        Audit.Write(connection, null, "unknown", "admin", "LOGIN_FAILED", null, null,
+            null, null, $"attempt {consecutiveFailures}");
+    }
+
     public IReadOnlyList<PriceHistoryEntry> PriceHistory(long? itemId = null)
     {
         using var connection = database.Open();

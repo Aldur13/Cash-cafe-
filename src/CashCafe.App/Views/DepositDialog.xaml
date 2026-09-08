@@ -1,0 +1,39 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="CashCafe.App.Views.DepositDialog"
+        Title="Deposit" Height="520" Width="520"
+        WindowStartupLocation="CenterOwner">
+
+    <StackPanel Margin="24">
+        <TextBlock Text="Money in" Style="{StaticResource Heading}" />
+        <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,0,0,16"
+                   Text="A parent has Swished the café, or handed over cash. Record it here." />
+
+        <TextBlock Text="STUDENT" Style="{StaticResource Label}" />
+        <TextBox x:Name="StudentBox" FontSize="16" />
+        <ListBox x:Name="StudentList" MaxHeight="160" Margin="0,4,0,12" DisplayMemberPath="DisplayName" />
+
+        <TextBlock Text="AMOUNT (kr)" Style="{StaticResource Label}" />
+        <TextBox x:Name="AmountBox" FontSize="18" />
+
+        <TextBlock Text="METHOD" Style="{StaticResource Label}" Margin="0,12,0,0" />
+        <ComboBox x:Name="MethodBox" MinHeight="40" SelectedIndex="0">
+            <ComboBoxItem Content="Swish" />
+            <ComboBoxItem Content="Cash" />
+            <ComboBoxItem Content="Bank transfer" />
+            <ComboBoxItem Content="Other" />
+        </ComboBox>
+
+        <TextBlock Text="REFERENCE (the Swish message, if there is one)" Style="{StaticResource Label}" Margin="0,12,0,0" />
+        <TextBox x:Name="ReferenceBox" />
+
+        <TextBlock x:Name="Problem" Foreground="{StaticResource Bad}" TextWrapping="Wrap"
+                   Margin="0,12,0,0" Visibility="Collapsed" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Cancel" IsCancel="True" Margin="0,0,8,0" MinWidth="100" />
+            <Button Content="Save" IsDefault="True" MinWidth="120"
+                    Style="{StaticResource PrimaryButton}" Click="Save_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -67,6 +67,14 @@ public sealed class SettingsRepository(CafeDatabase database)
         transaction.Commit();
     }
 
+    /// <summary>Reads one raw setting, or null when it has never been written.</summary>
+    public string? TryGet(string key)
+    {
+        using var connection = database.Open();
+        return connection.QuerySingleOrDefault<string?>(
+            "SELECT value FROM settings WHERE key = $key", new { key });
+    }
+
     public void Set(string key, string value, string actor)
     {
         using var connection = database.Open();

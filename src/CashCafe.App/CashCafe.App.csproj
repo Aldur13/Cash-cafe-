@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- Lets the project build on a non-Windows machine (CI, or a developer on a Mac).
+         It still only runs on Windows. -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>CashCafe</AssemblyName>
+    <RootNamespace>CashCafe.App</RootNamespace>
+    <SatelliteResourceLanguages>en;sv</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../CashCafe.App.Core/CashCafe.App.Core.csproj" />
+  </ItemGroup>
+</Project>
