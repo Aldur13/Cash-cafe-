@@ -240,3 +240,59 @@ Then stop using the Excel sheet. Keep the file, but do not edit it: from now on
 the program is the record, and the sheet is history. Re-importing an edited old
 sheet later is the one reliable way to reintroduce the errors this system exists
 to remove.
+
+---
+
+## Importing the menu
+
+Separate from balances, and simpler: **Admin → Items → Import menu from
+Excel…**. Same rule as everything else on this page — nothing is written until
+you press Import on the preview.
+
+### What the file needs
+
+A header row with at least a **Name** and a **Price** column, found anywhere in
+the first 10 rows:
+
+```
+        A          B          C        D               E
+1   Namn       Kategori   Pris     Kortkommando    Till salu
+2   Toast      Mat        10       t               Ja
+3   Juice      Dryck      15                        Nej
+```
+
+| Column | Required | Recognised headers |
+|---|---|---|
+| Name | Yes | `namn`, `vara`, `artikel`, `produkt`, `item`, `name`, `product` |
+| Price | Yes | `pris`, `price`, `kr`, `kronor`, `kostnad`, `cost` |
+| Category | No | `kategori`, `category`, `grupp`, `group` |
+| Shortcut | No | `kortkommando`, `shortcut`, `key`, `genväg` |
+| On sale | No | `till salu`, `säljs`, `available`, `on sale`, `aktiv` — `Ja`/`Nej`/`Yes`/`No`/`1`/`0`; a blank cell leaves the item's current on-sale flag alone |
+
+If no row in the first 10 has both a Name and a Price column, the import is
+refused before it reads a single data row — there is nothing sensible to guess
+at for a menu the way there is for a balance sheet.
+
+### What each row does
+
+An item is matched to the existing menu by its **exact name**, folded the same
+way search is (case, accents and punctuation ignored) — there is no fuzzy
+matching here, because a menu is short enough to read and a guessed match on a
+price is exactly the wrong place to guess.
+
+| The file says | The menu has | Result |
+|---|---|---|
+| A name not on the menu | — | **New item** created, on sale by default |
+| A name already on the menu, everything the same | Same price/category/shortcut/on-sale | **Nothing written** |
+| A name already on the menu, something different | Different price/category/shortcut/on-sale | **Updated** — see below |
+| The same name twice in the file | — | The second (and later) occurrences are skipped |
+| A row with no readable price | — | **Error** — blocks the whole import until fixed |
+
+An update changes the price through the same path as typing a new price in by
+hand: it is written to the price history with the reason "Excel import", and
+**every sale already made keeps the price it was actually sold at** — an import
+can never rewrite what a purchase cost at the time.
+
+Archived items (removed because they had sales history) are never matched or
+brought back by an import — there is no "unarchive" in the program, so a row
+that names an archived item creates a new item instead.

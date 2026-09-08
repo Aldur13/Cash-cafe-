@@ -20,6 +20,8 @@
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10">
                         <Button Content="Add item…" MinWidth="140" Margin="0,0,8,0" Click="AddItem_Click" />
+                        <Button Content="Import menu from Excel…" MinWidth="190" Margin="0,0,8,0" Click="ImportMenu_Click" />
+                        <Button Content="Export menu to Excel…" MinWidth="190" Margin="0,0,8,0" Click="ExportMenu_Click" />
                         <TextBlock VerticalAlignment="Center" Foreground="{StaticResource Muted}"
                                    Text="Double-click a row to change its price, take it off sale, or remove it." />
                     </StackPanel>

@@ -18,10 +18,11 @@ Everything described in this wiki:
 - [ ] Swedish and English interface
 - [ ] Installer and portable build
 
-**Built so far:** everything on the list above except the installer, with 263 automated
+**Built so far:** everything on the list above except the installer, with 277 automated
 tests — the money rules and the −10 kr floor, the append-only ledger and schema, the
-repositories and the database verifier, Excel import and export, backups with encryption
-and restore, the [student site](18-Student-Site.md), and the WPF till and admin panel.
+repositories and the database verifier, Excel import and export (both balances and the
+menu), backups with encryption and restore, the [student site](18-Student-Site.md), and
+the WPF till and admin panel.
 
 **Not yet done, and honestly stated:**
 

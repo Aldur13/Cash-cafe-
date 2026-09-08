@@ -70,6 +70,34 @@ public sealed class WorkbookExporter
         workbook.SaveAs(destination);
     }
 
+    /// <summary>
+    /// The menu on its own — what you hand someone to edit prices in Excel and bring back in,
+    /// or to set up a new café's items in one go instead of clicking Add item thirty times.
+    /// Archived items are left out: there is no way to bring one back through import, so
+    /// including it would be a promise the re-import cannot keep.
+    /// </summary>
+    public void WriteMenu(IReadOnlyList<Item> items, Stream destination)
+    {
+        using var workbook = new XLWorkbook();
+        var sheet = workbook.AddWorksheet("Varor");
+
+        Header(sheet, "Namn", "Kategori", "Pris", "Kortkommando", "Till salu");
+
+        var line = 2;
+        foreach (var item in items.Where(i => !i.IsArchived).OrderBy(i => i.SortOrder).ThenBy(i => i.Name))
+        {
+            sheet.Cell(line, 1).Value = item.Name;
+            sheet.Cell(line, 2).Value = item.Category ?? string.Empty;
+            MoneyCell(sheet.Cell(line, 3), item.Price);
+            sheet.Cell(line, 4).Value = item.ShortcutKey ?? string.Empty;
+            sheet.Cell(line, 5).Value = item.IsAvailable ? "Ja" : "Nej";
+            line++;
+        }
+
+        sheet.Columns().AdjustToContents();
+        workbook.SaveAs(destination);
+    }
+
     /// <summary>One student's complete history — what you give a parent who asks.</summary>
     public void WriteStatement(ExportData data, Student student, Stream destination)
     {

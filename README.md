@@ -8,7 +8,7 @@ and never lets an account go below **-10 kr**.
 
 > **Status: working, not yet packaged.**
 > The till, the admin panel, Excel import/export, backups and the student
-> website are all written, with **263 automated tests**. What is left is the
+> website are all written, with **277 automated tests**. What is left is the
 > installer, and a pass over the Windows screens on a real Windows machine —
 > they compile and are covered by tests, but nobody has clicked through them
 > yet. See [Roadmap](docs/wiki/15-Roadmap.md).
@@ -97,8 +97,10 @@ Open with **Admin** and your PIN.
 - **Students** — add, rename, set class, deactivate someone who left.
 - **Today** — what sold today, how much money came in, which students bought what.
 - **Reports** — any date range, per item / per student / per class.
-- **Import** — bring in an Excel sheet (balances or a student list).
-- **Export** — write everything back out to `.xlsx` or `.csv`.
+- **Import** — bring in an Excel sheet: student balances (Students tab) or the
+  whole menu at once (Items tab), both with a preview before anything is written.
+- **Export** — write everything back out to `.xlsx` or `.csv`, or just the menu
+  on its own to hand to whoever prices the café's stock.
 - **Backup & Cloud** — back up to a folder, a USB stick, Google Drive or OneDrive.
 - **History (audit log)** — every purchase, deposit, correction and price change,
   who did it and when. Read-only, cannot be edited.
@@ -146,7 +148,7 @@ network. See [Architecture](docs/wiki/10-Architecture.md).
 Needs the [.NET 8 SDK](https://dotnet.microsoft.com/download). Nothing else.
 
 ```bash
-dotnet test                                          # all 263 tests
+dotnet test                                          # all 277 tests
 dotnet run --project tools/CashCafe.Demo -- demo.db  # a café of invented students
 dotnet run --project src/CashCafe.Web \
     --urls http://127.0.0.1:5199 \

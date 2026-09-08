@@ -41,6 +41,7 @@ public sealed partial class AdminViewModel : ObservableObject
     [ObservableProperty] private string _message = string.Empty;
     [ObservableProperty] private bool _messageIsError;
     [ObservableProperty] private ImportPreview? _pendingImport;
+    [ObservableProperty] private ItemImportPreview? _pendingItemImport;
     [ObservableProperty] private DaySummary? _today;
 
     public ObservableCollection<Item> Items { get; } = new();
@@ -240,6 +241,76 @@ public sealed partial class AdminViewModel : ObservableObject
         var result = _imports.Undo(importId, Actor, _cafe.SessionId);
         Reload();
         Success(result.Message);
+    }
+
+    // ---- Menu import (Excel) ------------------------------------------------------------
+
+    /// <summary>
+    /// Reads a menu spreadsheet — Name and Price, at least — and works out what it would
+    /// change. Nothing is written until <see cref="ConfirmItemImport"/> is called.
+    /// </summary>
+    public ItemImportPreview? PrepareItemImport(Stream file, string fileName, string? sheetName = null)
+    {
+        var reader = new ItemWorkbookReader();
+
+        file.Position = 0;
+        var read = reader.Read(file, sheetName);
+
+        if (read is null)
+        {
+            Error("No 'Name' and 'Price' columns could be found in the first 10 rows of this sheet.");
+            return null;
+        }
+
+        var (readSheetName, rows) = read.Value;
+        PendingItemImport = ItemImportPlanner.Plan(rows, _cafe.Items.All(includeArchived: true), fileName, readSheetName);
+
+        Success($"{PendingItemImport.RowsRead} row(s) read. Nothing has been imported yet — check the preview.");
+        return PendingItemImport;
+    }
+
+    /// <summary>
+    /// Writes the pending menu import: adds new items, and changes the price, category,
+    /// shortcut or on-sale flag of any existing item the file disagrees with. Each price
+    /// change goes through <see cref="ChangePrice"/>, so it is audited exactly like a
+    /// price typed in by hand, and past sales keep the price they were sold at.
+    /// </summary>
+    public bool ConfirmItemImport()
+    {
+        if (PendingItemImport is null)
+        {
+            Error("There is no menu import waiting.");
+            return false;
+        }
+
+        var created = 0;
+        var updated = 0;
+
+        foreach (var row in PendingItemImport.Rows)
+        {
+            switch (row.Action)
+            {
+                case ItemImportAction.CreateItem:
+                    _cafe.Items.Create(row.Source.Name!, row.Source.Price!.Value, row.Source.Category,
+                        row.Source.Shortcut, Actor);
+                    created++;
+                    break;
+
+                case ItemImportAction.Update:
+                    if (row.Source.Price is { } price && price != row.ExistingPrice)
+                        _cafe.Items.ChangePrice(row.MatchedItemId!.Value, price, "Excel import", Actor);
+                    if (row.Source.Available is { } available)
+                        _cafe.Items.SetAvailable(row.MatchedItemId!.Value, available, Actor);
+                    updated++;
+                    break;
+            }
+        }
+
+        PendingItemImport = null;
+        Reload();
+
+        Success($"Menu import done: {created} item(s) added, {updated} updated.");
+        return true;
     }
 
     public IReadOnlyList<(long Id, string FileName, DateTimeOffset When, string By, int Rows, Money Total, bool Undone)>
