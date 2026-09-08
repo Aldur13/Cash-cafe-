@@ -24,6 +24,11 @@ public partial class AdminWindow : Window
         new AddStudentDialog(Admin) { Owner = this }.ShowDialog();
     }
 
+    private void NewDeposit_Click(object sender, RoutedEventArgs e)
+    {
+        if (new DepositDialog { Owner = this }.ShowDialog() == true) Admin.Reload();
+    }
+
     private void AddItem_Click(object sender, RoutedEventArgs e)
     {
         new AddItemDialog(Admin) { Owner = this }.ShowDialog();

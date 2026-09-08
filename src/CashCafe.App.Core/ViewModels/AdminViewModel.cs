@@ -10,6 +10,21 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace CashCafe.App.Core.ViewModels;
 
+/// <summary>One deposit, flattened with the student's name for the admin Deposits tab.</summary>
+public sealed record DepositRow
+{
+    public required long TransactionId { get; init; }
+    public required long StudentId { get; init; }
+    public required string StudentName { get; init; }
+    public string? ClassName { get; init; }
+    public required Money Amount { get; init; }
+    public DepositMethod? Method { get; init; }
+    public string? Reference { get; init; }
+    public required DateTimeOffset OccurredUtc { get; init; }
+    public required string Operator { get; init; }
+    public bool IsReversed { get; init; }
+}
+
 /// <summary>
 /// The admin panel behind the PIN: items and prices, students, deposits, reports, import,
 /// export, backups, settings and the audit log.
@@ -48,6 +63,7 @@ public sealed partial class AdminViewModel : ObservableObject
     public ObservableCollection<Student> Students { get; } = new();
     public ObservableCollection<AuditEntry> History { get; } = new();
     public ObservableCollection<Student> InTheRed { get; } = new();
+    public ObservableCollection<DepositRow> Deposits { get; } = new();
 
     public CafeSettings Settings => _cafe.Settings;
 
@@ -74,8 +90,42 @@ public sealed partial class AdminViewModel : ObservableObject
         InTheRed.Clear();
         foreach (var student in _cafe.Reports.InTheRed()) InTheRed.Add(student);
 
+        Deposits.Clear();
+        foreach (var deposit in RecentDeposits(200)) Deposits.Add(deposit);
+
         Today = _cafe.Reports.Day(DateOnly.FromDateTime(DateTime.Today));
         OnPropertyChanged(nameof(Settings));
+    }
+
+    /// <summary>The last N deposits across every student, newest first — for the admin
+    /// Deposits tab, which has no single-student filter the way a statement does.</summary>
+    private IReadOnlyList<DepositRow> RecentDeposits(int limit)
+    {
+        var students = _cafe.Students.All(includeInactive: true).ToDictionary(s => s.Id);
+
+        var deposits = students.Values
+            .SelectMany(s => _cafe.Ledger.History(s.Id, limit)
+                .Where(t => t.Type == TransactionType.Deposit)
+                .Select(t => (Student: s, Transaction: t)))
+            .OrderByDescending(x => x.Transaction.OccurredUtc)
+            .Take(limit)
+            .ToList();
+
+        var reversed = _cafe.Ledger.ReversedTransactionIds(deposits.Select(d => d.Transaction.Id));
+
+        return deposits.Select(d => new DepositRow
+        {
+            TransactionId = d.Transaction.Id,
+            StudentId = d.Student.Id,
+            StudentName = d.Student.DisplayName,
+            ClassName = d.Student.ClassName,
+            Amount = d.Transaction.Amount,
+            Method = d.Transaction.Method,
+            Reference = d.Transaction.Reference,
+            OccurredUtc = d.Transaction.OccurredUtc,
+            Operator = d.Transaction.Operator,
+            IsReversed = reversed.Contains(d.Transaction.Id),
+        }).ToList();
     }
 
     // ---- Items -------------------------------------------------------------------------

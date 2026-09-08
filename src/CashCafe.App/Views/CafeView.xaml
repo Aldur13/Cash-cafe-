@@ -34,7 +34,7 @@
                          Text="{Binding StudentQuery, UpdateSourceTrigger=PropertyChanged}" />
 
                 <ListBox x:Name="StudentList" MaxHeight="220" Margin="0,4,0,0"
-                         MouseDoubleClick="StudentList_Chosen"
+                         MouseLeftButtonUp="StudentList_Chosen"
                          ItemsSource="{Binding StudentMatches}"
                          Visibility="{Binding StudentQuery, Converter={StaticResource NotEmptyToVisibility}}">
                     <ListBox.ItemTemplate>

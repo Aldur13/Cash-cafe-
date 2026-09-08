@@ -259,6 +259,36 @@ public class AdminViewModelTests
         fixture.Admin.Message.Should().Contain("loses access at once");
     }
 
+    [Fact]
+    public void A_deposit_recorded_from_admin_appears_on_the_deposits_tab()
+    {
+        using var fixture = new TillFixture();
+        var carl = fixture.AddStudent("Carl", "Jacobs");
+
+        fixture.Admin.Deposit(carl, Money.FromKronor(50), DepositMethod.Swish, "SW-1234").Should().BeTrue();
+
+        fixture.Balance(carl).Should().Be(Money.FromKronor(50));
+        fixture.Admin.Deposits.Should().ContainSingle(d =>
+            d.StudentName == "Carl Jacobs" &&
+            d.Amount == Money.FromKronor(50) &&
+            d.Method == DepositMethod.Swish &&
+            d.Reference == "SW-1234" &&
+            !d.IsReversed);
+    }
+
+    [Fact]
+    public void A_reversed_deposit_shows_as_cancelled_rather_than_disappearing()
+    {
+        using var fixture = new TillFixture();
+        var carl = fixture.AddStudent("Carl", "Jacobs");
+        fixture.Admin.Deposit(carl, Money.FromKronor(50), DepositMethod.Cash, null);
+
+        var transactionId = fixture.Admin.Deposits.Single().TransactionId;
+        fixture.Admin.Reverse(transactionId, "Wrong student");
+
+        fixture.Admin.Deposits.Should().ContainSingle(d => d.TransactionId == transactionId && d.IsReversed);
+    }
+
     private static MemoryStream OldCafeSheet()
     {
         using var workbook = new ClosedXML.Excel.XLWorkbook();

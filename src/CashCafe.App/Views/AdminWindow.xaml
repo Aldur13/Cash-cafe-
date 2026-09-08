@@ -67,6 +67,31 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="Deposits">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="New deposit…" MinWidth="140" Margin="0,0,8,0" Click="NewDeposit_Click" />
+                        <TextBlock VerticalAlignment="Center" Foreground="{StaticResource Muted}"
+                                   Text="A parent Swished the café, or handed over cash — record it here." />
+                    </StackPanel>
+                    <DataGrid ItemsSource="{Binding Deposits}" AutoGenerateColumns="False" IsReadOnly="True"
+                              HeadersVisibility="Column" GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="When" Width="150"
+                                                Binding="{Binding OccurredUtc, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}" />
+                            <DataGridTextColumn Header="Student" Binding="{Binding StudentName}" Width="*" />
+                            <DataGridTextColumn Header="Class" Binding="{Binding ClassName}" Width="80" />
+                            <DataGridTextColumn Header="Amount" Width="110"
+                                                Binding="{Binding Amount, Converter={StaticResource Money}}" />
+                            <DataGridTextColumn Header="Method" Binding="{Binding Method}" Width="110" />
+                            <DataGridTextColumn Header="Reference" Binding="{Binding Reference}" Width="160" />
+                            <DataGridTextColumn Header="By" Binding="{Binding Operator}" Width="100" />
+                            <DataGridCheckBoxColumn Header="Cancelled" Binding="{Binding IsReversed}" Width="80" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
             <TabItem Header="Today">
                 <ScrollViewer>
                     <StackPanel Margin="12">

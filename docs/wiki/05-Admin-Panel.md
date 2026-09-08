@@ -90,30 +90,26 @@ spelling and class afterwards.
 
 ## Deposits
 
-Recording money that came in. Also reachable from the Café screen with `F4`.
+**Admin → Deposits → New deposit…** — the same dialog as `F4` on the Café
+screen, just reachable without leaving the admin panel. Money in only; there
+is no such thing as a negative deposit, use a **Correction** for that.
 
 | Field | Notes |
 |---|---|
 | Student | Same live search as the till |
-| Amount | Positive only. A negative "deposit" is not possible — use a Correction |
-| Method | `Swish`, `Cash`, `Bank transfer`, `Correction`, `Other` |
+| Amount | Positive only |
+| Method | `Swish`, `Cash`, `Bank transfer`, `Other` |
 | Reference | Free text — the Swish message or reference number |
-| Date | Defaults to now; can be back-dated by an admin, which is logged |
-| Note | Optional |
 
-**Bulk deposit** takes a pasted list or a small Excel file:
+The tab below the button lists the last 200 deposits across every student,
+newest first, with who recorded it and whether it was later cancelled — a
+cancelled one stays in the list rather than disappearing, because nothing in
+this program is ever silently deleted.
 
-```
-Carl Jacobs      100
-Astrid Lindqvist  50
-```
-
-…matches the names (with the same fuzzy matching as import, and a preview you
-must confirm), and writes one deposit per row with a shared batch reference. This
-is how you handle "here is the Swish report for the week".
-
-> Automatic Swish reconciliation is **planned, not built** — see [Roadmap](15-Roadmap.md).
-> Today the café reads its Swish report and enters the deposits.
+> **Not built yet:** back-dating a deposit, a note field, entering a whole
+> Swish report as one batch, and automatic Swish reconciliation. Today the
+> café reads its Swish report and enters each deposit by hand. See
+> [Roadmap](15-Roadmap.md).
 
 ---
 
