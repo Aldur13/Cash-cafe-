@@ -1,0 +1,22 @@
+# Build output
+bin/
+obj/
+*.user
+.vs/
+
+# Test results
+TestResults/
+*.trx
+
+# Local café data — never commit a database or a backup: they contain students' names
+*.db
+*.db-wal
+*.db-shm
+*.cafebak
+Backups/
+Imports/
+Logs/
+
+# Local settings that may hold a path or a destination
+appsettings.Development.json
+appsettings.Local.json
