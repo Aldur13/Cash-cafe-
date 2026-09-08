@@ -321,4 +321,32 @@ public class CafeViewModelTests
         second.SetItem(1, toast);
         second.CanExecute.Should().BeFalse();
     }
+
+    [Fact]
+    public void The_item_dropdown_lists_everything_on_sale()
+    {
+        using var fixture = new TillFixture();
+        fixture.AddItem("Toast", 10);
+        fixture.AddItem("Juice", 15);
+        var till = fixture.NewTill();
+
+        till.AvailableItems.Should().HaveCount(2);
+        till.AvailableItems.Should().Contain(i => i.Name == "Toast");
+        till.AvailableItems.Should().Contain(i => i.Name == "Juice");
+    }
+
+    [Fact]
+    public void An_item_taken_off_sale_disappears_from_the_dropdown_after_a_reload()
+    {
+        using var fixture = new TillFixture();
+        var toast = fixture.AddItem("Toast", 10);
+        var till = fixture.NewTill();
+
+        till.AvailableItems.Should().ContainSingle();
+
+        fixture.Items.SetAvailable(toast.Id, available: false, "test");
+        till.ReloadFromDatabase();
+
+        till.AvailableItems.Should().BeEmpty();
+    }
 }

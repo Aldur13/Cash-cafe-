@@ -52,6 +52,7 @@ public sealed partial class CafeViewModel : ObservableObject
         _cafe = cafe;
         _basket = new PurchaseBasket(cafe.Settings);
         Rows = new ObservableCollection<ItemRowViewModel>();
+        RefreshAvailableItems();
         SyncRows();
     }
 
@@ -65,6 +66,9 @@ public sealed partial class CafeViewModel : ObservableObject
     public ObservableCollection<Student> StudentMatches { get; } = new();
     public ObservableCollection<Item> ItemMatches { get; } = new();
     public ObservableCollection<RecentPurchase> RecentPurchases { get; } = new();
+
+    /// <summary>Everything on sale right now, for the item dropdown on each row.</summary>
+    public ObservableCollection<Item> AvailableItems { get; } = new();
 
     public Money Total => _basket.Total;
     public int ItemCount => _basket.ItemCount;
@@ -110,6 +114,12 @@ public sealed partial class CafeViewModel : ObservableObject
         ItemMatches.Clear();
         foreach (var match in Domain.StudentSearch.FindItems(_cafe.AvailableItems, query))
             ItemMatches.Add(match);
+    }
+
+    private void RefreshAvailableItems()
+    {
+        AvailableItems.Clear();
+        foreach (var item in _cafe.AvailableItems) AvailableItems.Add(item);
     }
 
     /// <summary>An item's shortcut key, typed into an empty row, adds it straight away.</summary>
@@ -253,6 +263,7 @@ public sealed partial class CafeViewModel : ObservableObject
     {
         _cafe.Refresh();
         SearchStudents(StudentQuery);
+        RefreshAvailableItems();
         OnPropertyChanged(nameof(CanExecute));
     }
 

@@ -46,12 +46,18 @@ public partial class CafeView : UserControl
         }
     }
 
-    private void ItemBox_KeyDown(object sender, KeyEventArgs e)
+    /// <summary>
+    /// A single letter on an empty row is still a shortcut key — "t" adds the toast without
+    /// opening the dropdown at all — because that is faster than clicking through a menu for
+    /// the item that sells fifty times a day. Anything else falls through to the combo box's
+    /// own behaviour: opening the list, or jumping to the item whose name starts with what
+    /// was typed.
+    /// </summary>
+    private void ItemCombo_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        if (sender is not TextBox box || box.Tag is not int lineNo) return;
+        if (sender is not ComboBox combo || combo.Tag is not int lineNo) return;
 
-        // A single letter in an empty row is a shortcut key: "t" adds the toast at once.
-        if (e.Key is >= Key.A and <= Key.Z && string.IsNullOrEmpty(box.Text))
+        if (e.Key is >= Key.A and <= Key.Z && combo.SelectedItem is null && !combo.IsDropDownOpen)
         {
             var item = Till.ItemForShortcut(e.Key.ToString());
             if (item is not null)
@@ -62,29 +68,18 @@ public partial class CafeView : UserControl
             }
         }
 
-        if (e.Key == Key.Enter)
-        {
-            Till.SearchItems(box.Text);
-
-            if (Till.ItemMatches.Count > 0)
-            {
-                Till.SetItem(lineNo, Till.ItemMatches[0]);
-                e.Handled = true;
-            }
-            else if (Till.CanExecute)
-            {
-                Till.Execute();
-                StudentBox.Focus();
-                e.Handled = true;
-            }
-        }
-
-        if (e.Key == Key.Back && string.IsNullOrEmpty(box.Text) && lineNo == 1)
+        if (e.Key == Key.Back && combo.SelectedItem is null && lineNo == 1)
         {
             StudentBox.Focus();
             StudentBox.SelectAll();
             e.Handled = true;
         }
+    }
+
+    private void ItemCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not ComboBox { Tag: int lineNo } combo) return;
+        if (combo.SelectedItem is Item item) Till.SetItem(lineNo, item);
     }
 
     private void StudentList_Chosen(object sender, MouseButtonEventArgs e)
