@@ -26,7 +26,7 @@ public sealed class ItemRepository(CafeDatabase database)
             "SELECT * FROM items WHERE id = $id", new { id })?.ToDomain();
     }
 
-    public long Create(string name, Money price, string? category, string? shortcutKey, string actor)
+    public long Create(string name, Money price, string? category, string actor)
     {
         var now = Rows.Format(DateTimeOffset.UtcNow);
 
@@ -35,9 +35,9 @@ public sealed class ItemRepository(CafeDatabase database)
 
         var id = connection.ExecuteScalar<long>(
             """
-            INSERT INTO items (name, search_name, category, price_ore, shortcut_key, is_available,
+            INSERT INTO items (name, search_name, category, price_ore, is_available,
                                is_archived, sort_order, created_utc)
-            VALUES ($name, $search, $category, $price, $shortcut, 1, 0,
+            VALUES ($name, $search, $category, $price, 1, 0,
                     (SELECT coalesce(max(sort_order), 0) + 10 FROM items), $now);
             SELECT last_insert_rowid();
             """,
@@ -47,7 +47,6 @@ public sealed class ItemRepository(CafeDatabase database)
                 search = SearchNormalizer.Normalize(name),
                 category,
                 price = price.Ore,
-                shortcut = string.IsNullOrWhiteSpace(shortcutKey) ? null : shortcutKey.Trim().ToLowerInvariant(),
                 now,
             }, transaction);
 

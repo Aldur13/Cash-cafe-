@@ -109,7 +109,7 @@ public partial class AdminWindow : Window
         }
     }
 
-    /// <summary>Writes the current menu (name, category, price, shortcut, on sale) to a workbook.</summary>
+    /// <summary>Writes the current menu (name, category, price, on sale) to a workbook.</summary>
     private void ExportMenu_Click(object sender, RoutedEventArgs e)
     {
         var dialog = new SaveFileDialog

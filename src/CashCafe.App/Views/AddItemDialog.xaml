@@ -16,10 +16,7 @@
         <TextBox x:Name="PriceBox" FontSize="16" Margin="0,0,0,12" />
 
         <TextBlock Text="CATEGORY (optional)" Style="{StaticResource Label}" />
-        <TextBox x:Name="CategoryBox" FontSize="16" Margin="0,0,0,12" />
-
-        <TextBlock Text="KEYBOARD SHORTCUT (optional, one letter)" Style="{StaticResource Label}" />
-        <TextBox x:Name="ShortcutBox" FontSize="16" MaxLength="1" />
+        <TextBox x:Name="CategoryBox" FontSize="16" />
 
         <TextBlock x:Name="Problem" Foreground="{StaticResource Bad}" TextWrapping="Wrap"
                    Margin="0,12,0,0" Visibility="Collapsed" />

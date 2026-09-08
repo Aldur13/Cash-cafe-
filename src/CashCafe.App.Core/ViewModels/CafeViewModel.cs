@@ -122,11 +122,6 @@ public sealed partial class CafeViewModel : ObservableObject
         foreach (var item in _cafe.AvailableItems) AvailableItems.Add(item);
     }
 
-    /// <summary>An item's shortcut key, typed into an empty row, adds it straight away.</summary>
-    public Item? ItemForShortcut(string key) =>
-        _cafe.AvailableItems.FirstOrDefault(i =>
-            string.Equals(i.ShortcutKey, key, StringComparison.OrdinalIgnoreCase));
-
     [RelayCommand]
     public void SelectStudent(Student? student)
     {

@@ -229,17 +229,6 @@ public class CafeViewModelTests
     }
 
     [Fact]
-    public void A_shortcut_key_finds_its_item()
-    {
-        using var fixture = new TillFixture();
-        fixture.AddItem("Toast", 10, shortcut: "t");
-        var till = fixture.NewTill();
-
-        till.ItemForShortcut("T")!.Name.Should().Be("Toast");
-        till.ItemForShortcut("z").Should().BeNull();
-    }
-
-    [Fact]
     public void An_item_marked_sold_out_disappears_from_the_till()
     {
         using var fixture = new TillFixture();

@@ -14,19 +14,17 @@ public class ItemWorkbookReaderTests
             sheet.Cell(1, 1).Value = "Namn";
             sheet.Cell(1, 2).Value = "Kategori";
             sheet.Cell(1, 3).Value = "Pris";
-            sheet.Cell(1, 4).Value = "Kortkommando";
-            sheet.Cell(1, 5).Value = "Till salu";
+            sheet.Cell(1, 4).Value = "Till salu";
 
             sheet.Cell(2, 1).Value = "Toast";
             sheet.Cell(2, 2).Value = "Mat";
             sheet.Cell(2, 3).Value = 10;
-            sheet.Cell(2, 4).Value = "t";
-            sheet.Cell(2, 5).Value = "Ja";
+            sheet.Cell(2, 4).Value = "Ja";
 
             sheet.Cell(3, 1).Value = "Juice";
             sheet.Cell(3, 2).Value = "Dryck";
             sheet.Cell(3, 3).Value = 15;
-            sheet.Cell(3, 5).Value = "Nej";
+            sheet.Cell(3, 4).Value = "Nej";
         });
 
         var result = _reader.Read(file);
@@ -38,7 +36,6 @@ public class ItemWorkbookReaderTests
         rows[0].Name.Should().Be("Toast");
         rows[0].Category.Should().Be("Mat");
         rows[0].Price.Should().Be(Money.FromKronor(10));
-        rows[0].Shortcut.Should().Be("t");
         rows[0].Available.Should().BeTrue();
 
         rows[1].Name.Should().Be("Juice");

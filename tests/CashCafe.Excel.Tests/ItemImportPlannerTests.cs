@@ -6,27 +6,25 @@ namespace CashCafe.Excel.Tests;
 public class ItemImportPlannerTests
 {
     private static Item Existing(long id, string name, decimal price, string? category = null,
-        string? shortcut = null, bool available = true, bool archived = false) => new()
+        bool available = true, bool archived = false) => new()
     {
         Id = id,
         Name = name,
         SearchName = SearchNormalizer.Normalize(name),
         Category = category,
         Price = Money.FromKronor(price),
-        ShortcutKey = shortcut,
         IsAvailable = available,
         IsArchived = archived,
     };
 
     private static ParsedItemRow Row(int number, string name, decimal price, string? category = null,
-        string? shortcut = null, bool? available = null) => new()
+        bool? available = null) => new()
     {
         RowNumber = number,
         RawText = $"{name} {price}",
         Name = name,
         Price = Money.FromKronor(price),
         Category = category,
-        Shortcut = shortcut,
         Available = available,
     };
 

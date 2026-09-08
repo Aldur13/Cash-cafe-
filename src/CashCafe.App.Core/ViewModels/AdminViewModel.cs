@@ -80,9 +80,9 @@ public sealed partial class AdminViewModel : ObservableObject
 
     // ---- Items -------------------------------------------------------------------------
 
-    public void AddItem(string name, Money price, string? category = null, string? shortcut = null)
+    public void AddItem(string name, Money price, string? category = null)
     {
-        _cafe.Items.Create(name, price, category, shortcut, Actor);
+        _cafe.Items.Create(name, price, category, Actor);
         Reload();
         Success($"Added {name} at {price}.");
     }
@@ -271,9 +271,9 @@ public sealed partial class AdminViewModel : ObservableObject
 
     /// <summary>
     /// Writes the pending menu import: adds new items, and changes the price, category,
-    /// shortcut or on-sale flag of any existing item the file disagrees with. Each price
-    /// change goes through <see cref="ChangePrice"/>, so it is audited exactly like a
-    /// price typed in by hand, and past sales keep the price they were sold at.
+    /// or on-sale flag of any existing item the file disagrees with. Each price change
+    /// goes through <see cref="ChangePrice"/>, so it is audited exactly like a price
+    /// typed in by hand, and past sales keep the price they were sold at.
     /// </summary>
     public bool ConfirmItemImport()
     {
@@ -291,8 +291,7 @@ public sealed partial class AdminViewModel : ObservableObject
             switch (row.Action)
             {
                 case ItemImportAction.CreateItem:
-                    _cafe.Items.Create(row.Source.Name!, row.Source.Price!.Value, row.Source.Category,
-                        row.Source.Shortcut, Actor);
+                    _cafe.Items.Create(row.Source.Name!, row.Source.Price!.Value, row.Source.Category, Actor);
                     created++;
                     break;
 

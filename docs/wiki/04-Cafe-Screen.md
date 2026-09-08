@@ -119,7 +119,7 @@ note reads *"Maximum 10 items per purchase"*; take the rest as a second purchase
 | Column | What it does |
 |---|---|
 | **#** | Row number, 1–10 |
-| **Item** | A drop-down of everything on sale — click, or use the keyboard (below) |
+| **Item** | A drop-down of everything on sale |
 | **Qty** | Quantity, 1–99. Defaults to 1. `+`/`-` buttons, or type a number |
 | **Price** | The item's current unit price. Filled in **the moment you select the item** — read-only here |
 | **Line total** | Price × quantity |
@@ -131,9 +131,6 @@ note reads *"Maximum 10 items per purchase"*; take the rest as a second purchase
   is visible before you even pick anything, not just after.
 - Only items marked **available** appear. An item that is sold out for the day is
   toggled off in Admin and vanishes from the till, without being deleted.
-- Items with a **shortcut key** can still be added the fast way: press that key
-  while an empty row has focus and nothing selected — `T` → Toast, with no need
-  to open the drop-down at all.
 - Typing a letter with the drop-down closed jumps straight to the first item
   whose name starts with it (the ordinary Windows combo-box behaviour), so a
   long menu does not have to be scrolled by hand.

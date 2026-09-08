@@ -56,7 +56,6 @@ internal static class Rows
         public string search_name { get; set; } = string.Empty;
         public string? category { get; set; }
         public long price_ore { get; set; }
-        public string? shortcut_key { get; set; }
         public long is_available { get; set; }
         public long is_archived { get; set; }
         public long sort_order { get; set; }
@@ -69,7 +68,6 @@ internal static class Rows
             SearchName = search_name,
             Category = category,
             Price = new Money(price_ore),
-            ShortcutKey = shortcut_key,
             IsAvailable = is_available != 0,
             IsArchived = is_archived != 0,
             SortOrder = (int)sort_order,

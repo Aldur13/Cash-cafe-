@@ -55,7 +55,7 @@ public sealed class BackupTestCafe : IDisposable
     {
         var carl = AddStudent("Carl", "Jacobs", 50);
         AddStudent("Astrid", "Lindqvist", 120);
-        var toast = Items.Create("Toast", Money.FromKronor(10), null, null, "test");
+        var toast = Items.Create("Toast", Money.FromKronor(10), null, "test");
 
         Ledger.ExecutePurchase(carl,
             new[] { new BasketLine { LineNo = 1, ItemId = toast, ItemName = "Toast", UnitPrice = Money.FromKronor(10) } },

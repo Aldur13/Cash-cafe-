@@ -21,7 +21,7 @@ Print this page and tape it next to the till.
 
 | Key | Does |
 |---|---|
-| *(a letter)* | Search items — or add an item directly if it is that item's shortcut key |
+| *(a letter, with the drop-down closed)* | Jump to the first item whose name starts with it |
 | `+` / `-` | Quantity up / down |
 | `0`–`9` (in the Qty field) | Type a quantity |
 | `Ctrl+Delete` | Remove the current row |
@@ -61,7 +61,7 @@ An experienced user serving Carl a toast and two juices:
 
 ```
 c a r ⏎        student
-t ⏎            Toast (shortcut key)
+t ⏎            Toast
 j ⏎ + +        Juice, quantity 2
 ⏎              Execute
 ```

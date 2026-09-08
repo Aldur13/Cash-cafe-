@@ -81,7 +81,7 @@ public sealed class WorkbookExporter
         using var workbook = new XLWorkbook();
         var sheet = workbook.AddWorksheet("Varor");
 
-        Header(sheet, "Namn", "Kategori", "Pris", "Kortkommando", "Till salu");
+        Header(sheet, "Namn", "Kategori", "Pris", "Till salu");
 
         var line = 2;
         foreach (var item in items.Where(i => !i.IsArchived).OrderBy(i => i.SortOrder).ThenBy(i => i.Name))
@@ -89,8 +89,7 @@ public sealed class WorkbookExporter
             sheet.Cell(line, 1).Value = item.Name;
             sheet.Cell(line, 2).Value = item.Category ?? string.Empty;
             MoneyCell(sheet.Cell(line, 3), item.Price);
-            sheet.Cell(line, 4).Value = item.ShortcutKey ?? string.Empty;
-            sheet.Cell(line, 5).Value = item.IsAvailable ? "Ja" : "Nej";
+            sheet.Cell(line, 4).Value = item.IsAvailable ? "Ja" : "Nej";
             line++;
         }
 
@@ -218,7 +217,7 @@ public sealed class WorkbookExporter
     private void WriteItems(XLWorkbook workbook, ExportData data)
     {
         var sheet = workbook.AddWorksheet("Items");
-        Header(sheet, "ItemId", "Name", "Category", "Price", "Shortcut", "Available", "Archived");
+        Header(sheet, "ItemId", "Name", "Category", "Price", "Available", "Archived");
 
         var line = 2;
         foreach (var item in data.Items.OrderBy(i => i.SortOrder).ThenBy(i => i.Name))
@@ -227,9 +226,8 @@ public sealed class WorkbookExporter
             sheet.Cell(line, 2).Value = item.Name;
             sheet.Cell(line, 3).Value = item.Category ?? string.Empty;
             MoneyCell(sheet.Cell(line, 4), item.Price);
-            sheet.Cell(line, 5).Value = item.ShortcutKey ?? string.Empty;
-            sheet.Cell(line, 6).Value = item.IsAvailable ? "Ja" : "Nej";
-            sheet.Cell(line, 7).Value = item.IsArchived ? "Ja" : "Nej";
+            sheet.Cell(line, 5).Value = item.IsAvailable ? "Ja" : "Nej";
+            sheet.Cell(line, 6).Value = item.IsArchived ? "Ja" : "Nej";
             line++;
         }
 

@@ -29,13 +29,11 @@ CREATE TABLE items (
     search_name   TEXT    NOT NULL,
     category      TEXT,
     price_ore     INTEGER NOT NULL CHECK (price_ore >= 0),
-    shortcut_key  TEXT,
     is_available  INTEGER NOT NULL DEFAULT 1,
     is_archived   INTEGER NOT NULL DEFAULT 0,
     sort_order    INTEGER NOT NULL DEFAULT 0,
     created_utc   TEXT    NOT NULL
 );
-CREATE UNIQUE INDEX ux_items_shortcut ON items(shortcut_key) WHERE shortcut_key IS NOT NULL;
 
 CREATE TABLE price_history (
     id             INTEGER PRIMARY KEY,

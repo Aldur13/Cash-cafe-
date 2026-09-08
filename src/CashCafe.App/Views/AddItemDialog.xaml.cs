@@ -42,8 +42,7 @@ public partial class AddItemDialog : Window
             _admin.AddItem(
                 name,
                 parsed.Value,
-                string.IsNullOrWhiteSpace(CategoryBox.Text) ? null : CategoryBox.Text.Trim(),
-                string.IsNullOrWhiteSpace(ShortcutBox.Text) ? null : ShortcutBox.Text.Trim());
+                string.IsNullOrWhiteSpace(CategoryBox.Text) ? null : CategoryBox.Text.Trim());
         }
         catch (System.Exception ex)
         {

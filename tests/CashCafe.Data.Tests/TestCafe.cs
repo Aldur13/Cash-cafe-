@@ -51,7 +51,7 @@ public sealed class TestCafe : IDisposable
     }
 
     public long AddItem(string name, decimal priceKronor) =>
-        Items.Create(name, Money.FromKronor(priceKronor), null, null, "test");
+        Items.Create(name, Money.FromKronor(priceKronor), null, "test");
 
     public Student Student(long id) => Students.Find(id)!;
     public Money Balance(long id) => Students.Find(id)!.Balance;

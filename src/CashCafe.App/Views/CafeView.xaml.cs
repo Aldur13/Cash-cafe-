@@ -46,27 +46,9 @@ public partial class CafeView : UserControl
         }
     }
 
-    /// <summary>
-    /// A single letter on an empty row is still a shortcut key — "t" adds the toast without
-    /// opening the dropdown at all — because that is faster than clicking through a menu for
-    /// the item that sells fifty times a day. Anything else falls through to the combo box's
-    /// own behaviour: opening the list, or jumping to the item whose name starts with what
-    /// was typed.
-    /// </summary>
     private void ItemCombo_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (sender is not ComboBox combo || combo.Tag is not int lineNo) return;
-
-        if (e.Key is >= Key.A and <= Key.Z && combo.SelectedItem is null && !combo.IsDropDownOpen)
-        {
-            var item = Till.ItemForShortcut(e.Key.ToString());
-            if (item is not null)
-            {
-                Till.SetItem(lineNo, item);
-                e.Handled = true;
-                return;
-            }
-        }
 
         if (e.Key == Key.Back && combo.SelectedItem is null && lineNo == 1)
         {

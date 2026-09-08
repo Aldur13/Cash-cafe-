@@ -32,7 +32,6 @@ detected wrongly, use **Change column mapping**. Full detail:
 | Name | `Toast` |
 | Price | `10,00` |
 | Category (optional) | `Food` |
-| Shortcut key (optional) | `T` |
 
 Do this for everything: Toast 10 kr, Juice 15 kr, Bulle 12 kr, Kaffe 10 kr…
 You can add more at any time, and change prices at any time — old sales keep the

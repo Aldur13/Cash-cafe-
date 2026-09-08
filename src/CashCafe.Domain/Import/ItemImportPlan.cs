@@ -8,7 +8,7 @@ public enum ItemImportAction
     /// <summary>Already on the menu and nothing in the row differs: nothing to write.</summary>
     KeepExisting,
 
-    /// <summary>Already on the menu with a different price, category, shortcut, or on-sale flag.</summary>
+    /// <summary>Already on the menu with a different price, category, or on-sale flag.</summary>
     Update,
 
     /// <summary>Blank row, or something a person chose to leave out.</summary>
@@ -36,7 +36,6 @@ public sealed record ParsedItemRow
     public string? Name { get; init; }
     public string? Category { get; init; }
     public Money? Price { get; init; }
-    public string? Shortcut { get; init; }
     public bool? Available { get; init; }
     public string? Error { get; init; }
 

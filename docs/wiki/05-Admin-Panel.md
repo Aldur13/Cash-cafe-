@@ -24,14 +24,13 @@ The list of everything the café sells.
 | Name | Shown at the till |
 | Price | In kr, e.g. `10,00` |
 | Category | Optional — Food, Drink, Sweets… used for grouping and reports |
-| Shortcut | Optional single key for fast entry at the till |
 | Available | Toggle. Off = hidden from the till, still in reports |
 | Sold today / this month | Read-only, so you can see what actually moves |
 
 ### Actions
 
 - **New item** — name and price are required; everything else optional.
-- **Edit** — change name, category, shortcut, availability.
+- **Edit** — change name, category, availability.
 - **Change price** — deliberately a separate action from Edit, with its own
   dialog and an optional "from when" date. **Old sales keep the old price**;
   changing a price never rewrites history

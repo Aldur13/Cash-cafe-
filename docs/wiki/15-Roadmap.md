@@ -18,7 +18,7 @@ Everything described in this wiki:
 - [ ] Swedish and English interface
 - [ ] Installer and portable build
 
-**Built so far:** everything on the list above except the installer, with 279 automated
+**Built so far:** everything on the list above except the installer, with 278 automated
 tests — the money rules and the −10 kr floor, the append-only ledger and schema, the
 repositories and the database verifier, Excel import and export (both balances and the
 menu), backups with encryption and restore, the [student site](18-Student-Site.md), and

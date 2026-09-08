@@ -8,7 +8,7 @@ and never lets an account go below **-10 kr**.
 
 > **Status: working, not yet packaged.**
 > The till, the admin panel, Excel import/export, backups and the student
-> website are all written, with **279 automated tests**. What is left is the
+> website are all written, with **278 automated tests**. What is left is the
 > installer, and a pass over the Windows screens on a real Windows machine —
 > they compile and are covered by tests, but nobody has clicked through them
 > yet. See [Roadmap](docs/wiki/15-Roadmap.md).
@@ -148,7 +148,7 @@ network. See [Architecture](docs/wiki/10-Architecture.md).
 Needs the [.NET 8 SDK](https://dotnet.microsoft.com/download). Nothing else.
 
 ```bash
-dotnet test                                          # all 279 tests
+dotnet test                                          # all 278 tests
 dotnet run --project tools/CashCafe.Demo -- demo.db  # a café of invented students
 dotnet run --project src/CashCafe.Web \
     --urls http://127.0.0.1:5199 \

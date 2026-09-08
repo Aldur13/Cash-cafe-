@@ -82,8 +82,6 @@ public static class ItemImportPlanner
                     row.Price != existing.Price ||
                     !string.Equals(row.Category ?? string.Empty, existing.Category ?? string.Empty,
                         StringComparison.OrdinalIgnoreCase) ||
-                    !string.Equals(row.Shortcut ?? string.Empty, existing.ShortcutKey ?? string.Empty,
-                        StringComparison.OrdinalIgnoreCase) ||
                     (row.Available ?? existing.IsAvailable) != existing.IsAvailable;
 
                 result.Add(new ItemImportRow

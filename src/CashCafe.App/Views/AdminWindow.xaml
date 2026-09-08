@@ -33,7 +33,6 @@
                             <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="140" />
                             <DataGridTextColumn Header="Price" Width="110"
                                                 Binding="{Binding Price, Converter={StaticResource Money}}" />
-                            <DataGridTextColumn Header="Key" Binding="{Binding ShortcutKey}" Width="60" />
                             <DataGridCheckBoxColumn Header="On sale" Binding="{Binding IsAvailable}" Width="80" />
                             <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" Width="80" />
                         </DataGrid.Columns>

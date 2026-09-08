@@ -27,19 +27,19 @@ var settings = new SettingsRepository(database);
 settings.SetFlag("student_site_enabled", true, "demo");
 settings.SetBusyness(BusynessLevel.Steady, "demo", "demo");
 
-var menu = new (string Name, decimal Price, string Category, string Shortcut)[]
+var menu = new (string Name, decimal Price, string Category)[]
 {
-    ("Toast", 10m, "Mat", "t"),
-    ("Bulle", 12m, "Fika", "b"),
-    ("Juice", 15m, "Dryck", "j"),
-    ("Kaffe", 10m, "Dryck", "k"),
-    ("Smörgås", 20m, "Mat", "s"),
-    ("Frukt", 5m, "Mat", "f"),
+    ("Toast", 10m, "Mat"),
+    ("Bulle", 12m, "Fika"),
+    ("Juice", 15m, "Dryck"),
+    ("Kaffe", 10m, "Dryck"),
+    ("Smörgås", 20m, "Mat"),
+    ("Frukt", 5m, "Mat"),
 };
 
 var menuIds = menu.ToDictionary(
     m => m.Name,
-    m => items.Create(m.Name, Money.FromKronor(m.Price), m.Category, m.Shortcut, "demo"));
+    m => items.Create(m.Name, Money.FromKronor(m.Price), m.Category, "demo"));
 
 var roster = new (string First, string Last, string Class, decimal Opening, string Email)[]
 {

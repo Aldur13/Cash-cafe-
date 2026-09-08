@@ -38,7 +38,6 @@ public sealed record Item
     public required string SearchName { get; init; }
     public string? Category { get; init; }
     public Money Price { get; init; }
-    public string? ShortcutKey { get; init; }
 
     /// <summary>False when sold out for the day. Hidden from the till, kept in reports.</summary>
     public bool IsAvailable { get; init; } = true;

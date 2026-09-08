@@ -8,7 +8,6 @@ internal enum ItemColumnRole
     Name,
     Category,
     Price,
-    Shortcut,
     Available,
 }
 
@@ -20,7 +19,6 @@ internal static class ItemHeaderNames
         (ItemColumnRole.Name, new[] { "namn", "vara", "artikel", "produkt", "item", "name", "product" }),
         (ItemColumnRole.Category, new[] { "kategori", "category", "grupp", "group" }),
         (ItemColumnRole.Price, new[] { "pris", "price", "kr", "kronor", "kostnad", "cost" }),
-        (ItemColumnRole.Shortcut, new[] { "kortkommando", "shortcut", "key", "genvag", "snabbtangent" }),
         (ItemColumnRole.Available, new[] { "tillsalu", "till salu", "saljs", "available", "onsale", "on sale", "aktiv" }),
     };
 

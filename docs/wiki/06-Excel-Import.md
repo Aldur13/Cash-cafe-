@@ -255,10 +255,10 @@ A header row with at least a **Name** and a **Price** column, found anywhere in
 the first 10 rows:
 
 ```
-        A          B          C        D               E
-1   Namn       Kategori   Pris     Kortkommando    Till salu
-2   Toast      Mat        10       t               Ja
-3   Juice      Dryck      15                        Nej
+        A          B          C        D
+1   Namn       Kategori   Pris     Till salu
+2   Toast      Mat        10       Ja
+3   Juice      Dryck      15       Nej
 ```
 
 | Column | Required | Recognised headers |
@@ -266,7 +266,6 @@ the first 10 rows:
 | Name | Yes | `namn`, `vara`, `artikel`, `produkt`, `item`, `name`, `product` |
 | Price | Yes | `pris`, `price`, `kr`, `kronor`, `kostnad`, `cost` |
 | Category | No | `kategori`, `category`, `grupp`, `group` |
-| Shortcut | No | `kortkommando`, `shortcut`, `key`, `genväg` |
 | On sale | No | `till salu`, `säljs`, `available`, `on sale`, `aktiv` — `Ja`/`Nej`/`Yes`/`No`/`1`/`0`; a blank cell leaves the item's current on-sale flag alone |
 
 If no row in the first 10 has both a Name and a Price column, the import is
@@ -283,8 +282,8 @@ price is exactly the wrong place to guess.
 | The file says | The menu has | Result |
 |---|---|---|
 | A name not on the menu | — | **New item** created, on sale by default |
-| A name already on the menu, everything the same | Same price/category/shortcut/on-sale | **Nothing written** |
-| A name already on the menu, something different | Different price/category/shortcut/on-sale | **Updated** — see below |
+| A name already on the menu, everything the same | Same price/category/on-sale | **Nothing written** |
+| A name already on the menu, something different | Different price/category/on-sale | **Updated** — see below |
 | The same name twice in the file | — | The second (and later) occurrences are skipped |
 | A row with no readable price | — | **Error** — blocks the whole import until fixed |
 

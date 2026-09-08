@@ -6,14 +6,13 @@ namespace CashCafe.Excel.Tests;
 /// an export nobody can re-import is not a backup, it is a dead end.</summary>
 public class MenuRoundTripTests
 {
-    private static Item Sample(long id, string name, decimal price, string? category, string? shortcut) => new()
+    private static Item Sample(long id, string name, decimal price, string? category) => new()
     {
         Id = id,
         Name = name,
         SearchName = SearchNormalizer.Normalize(name),
         Category = category,
         Price = Money.FromKronor(price),
-        ShortcutKey = shortcut,
     };
 
     [Fact]
@@ -21,9 +20,9 @@ public class MenuRoundTripTests
     {
         var items = new[]
         {
-            Sample(1, "Toast", 10, "Mat", "t"),
-            Sample(2, "Smörgås", 20.50m, "Mat", null),
-            Sample(3, "Juice", 15, null, "j"),
+            Sample(1, "Toast", 10, "Mat"),
+            Sample(2, "Smörgås", 20.50m, "Mat"),
+            Sample(3, "Juice", 15, null),
         };
 
         using var stream = new MemoryStream();
@@ -40,7 +39,6 @@ public class MenuRoundTripTests
         var toast = rows.Single(r => r.Name == "Toast");
         toast.Price.Should().Be(Money.FromKronor(10));
         toast.Category.Should().Be("Mat");
-        toast.Shortcut.Should().Be("t");
 
         rows.Single(r => r.Name == "Smörgås").Price.Should().Be(Money.FromKronor(20.50m));
         rows.Should().Contain(r => r.Name == "Juice");
@@ -49,8 +47,8 @@ public class MenuRoundTripTests
     [Fact]
     public void An_archived_item_is_left_out_of_the_export()
     {
-        var archived = Sample(1, "Gammal fika", 5, null, null) with { IsArchived = true };
-        var active = Sample(2, "Toast", 10, null, null);
+        var archived = Sample(1, "Gammal fika", 5, null) with { IsArchived = true };
+        var active = Sample(2, "Toast", 10, null);
 
         using var stream = new MemoryStream();
         new WorkbookExporter().WriteMenu(new[] { archived, active }, stream);

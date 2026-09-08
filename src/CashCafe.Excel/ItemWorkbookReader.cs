@@ -59,7 +59,6 @@ public sealed class ItemWorkbookReader
         var nameColumn = columns.First(c => c.Value == ItemColumnRole.Name).Key;
         var priceColumn = columns.First(c => c.Value == ItemColumnRole.Price).Key;
         var categoryColumn = columns.FirstOrDefault(c => c.Value == ItemColumnRole.Category).Key;
-        var shortcutColumn = columns.FirstOrDefault(c => c.Value == ItemColumnRole.Shortcut).Key;
         var availableColumn = columns.FirstOrDefault(c => c.Value == ItemColumnRole.Available).Key;
 
         var rows = new List<ParsedItemRow>();
@@ -89,10 +88,6 @@ public sealed class ItemWorkbookReader
                 ? sheet.Cell(rowNumber, categoryColumn).GetFormattedString().Trim()
                 : null;
 
-            var shortcut = shortcutColumn > 0
-                ? sheet.Cell(rowNumber, shortcutColumn).GetFormattedString().Trim()
-                : null;
-
             bool? available = null;
             if (availableColumn > 0)
             {
@@ -107,7 +102,6 @@ public sealed class ItemWorkbookReader
                 Name = name.Length == 0 ? null : name,
                 Category = string.IsNullOrWhiteSpace(category) ? null : category,
                 Price = price,
-                Shortcut = string.IsNullOrWhiteSpace(shortcut) ? null : shortcut,
                 Available = available,
                 Error = error,
             });

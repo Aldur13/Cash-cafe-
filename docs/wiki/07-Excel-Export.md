@@ -71,7 +71,7 @@ file" button and the file to keep as an archive.
 `ItemName` and `UnitPrice` are the values **as they were at the time of sale**,
 not today's values.
 
-**Sheet `Items`** — id, name, category, current price, shortcut, available, archived.
+**Sheet `Items`** — id, name, category, current price, available, archived.
 **Sheet `PriceHistory`** — item, price, valid from, valid to, changed by.
 **Sheet `Deposits`** — the deposit subset of transactions, with methods and references.
 **Sheet `AuditLog`** — the full audit trail.
@@ -138,8 +138,8 @@ lands in that folder in the clear — read
 
 **Admin → Items → Export menu to Excel…** — one sheet, `Varor`, with exactly the
 columns the menu importer above reads back: `Namn`, `Kategori`, `Pris`,
-`Kortkommando`, `Till salu`. Edit prices in Excel, save, and import the same
-file back in — it round-trips.
+`Till salu`. Edit prices in Excel, save, and import the same file back in —
+it round-trips.
 
 Archived items are left out on purpose: there is no way to bring one back
 through import, so including it in an export meant to be re-imported would be

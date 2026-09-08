@@ -69,9 +69,9 @@ public sealed class TillFixture : IDisposable
         return id;
     }
 
-    public Item AddItem(string name, decimal price, string? shortcut = null)
+    public Item AddItem(string name, decimal price)
     {
-        var id = Items.Create(name, Money.FromKronor(price), null, shortcut, "test");
+        var id = Items.Create(name, Money.FromKronor(price), null, "test");
         Context.Refresh();
         return Items.Find(id)!;
     }

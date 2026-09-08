@@ -69,7 +69,7 @@ public sealed class SiteFixture : WebApplicationFactory<Program>, IDisposable
 
     public void Buy(long studentId, string itemName, decimal price, int quantity = 1)
     {
-        var itemId = Items.Create(itemName, Money.FromKronor(price), null, null, "test");
+        var itemId = Items.Create(itemName, Money.FromKronor(price), null, "test");
         Ledger.ExecutePurchase(studentId,
             new[]
             {

@@ -10,7 +10,7 @@ public class AdminViewModelTests
     {
         using var fixture = new TillFixture();
 
-        fixture.Admin.AddItem("Toast", Money.FromKronor(10), "Mat", "t");
+        fixture.Admin.AddItem("Toast", Money.FromKronor(10), "Mat");
 
         fixture.Admin.Items.Should().ContainSingle(i => i.Name == "Toast");
 
