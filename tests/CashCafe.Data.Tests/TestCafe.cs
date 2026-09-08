@@ -25,6 +25,8 @@ public sealed class TestCafe : IDisposable
         Settings = new SettingsRepository(Database);
         Reports = new ReportRepository(Database);
         Verifier = new DatabaseVerifier(Database);
+        Imports = new ImportService(Database);
+        Audit = new AuditRepository(Database);
     }
 
     public CafeDatabase Database { get; }
@@ -35,6 +37,8 @@ public sealed class TestCafe : IDisposable
     public SettingsRepository Settings { get; }
     public ReportRepository Reports { get; }
     public DatabaseVerifier Verifier { get; }
+    public ImportService Imports { get; }
+    public AuditRepository Audit { get; }
 
     public CafeSettings Config => Settings.Load();
 

@@ -124,3 +124,30 @@ public sealed record StudentLogin
     public DateTimeOffset? LastSeenUtc { get; init; }
     public bool IsEnabled { get; init; } = true;
 }
+
+/// <summary>One line of the permanent record of who did what, and when.</summary>
+public sealed record AuditEntry
+{
+    public long Id { get; init; }
+    public DateTimeOffset OccurredUtc { get; init; }
+    public required string Actor { get; init; }
+    public string SessionId { get; init; } = string.Empty;
+    public required string Action { get; init; }
+    public string? EntityType { get; init; }
+    public long? EntityId { get; init; }
+    public string? OldValue { get; init; }
+    public string? NewValue { get; init; }
+    public string? Detail { get; init; }
+}
+
+/// <summary>A price an item once had, and for how long.</summary>
+public sealed record PriceHistoryEntry
+{
+    public long ItemId { get; init; }
+    public required string ItemName { get; init; }
+    public Money Price { get; init; }
+    public DateTimeOffset ValidFromUtc { get; init; }
+    public DateTimeOffset? ValidToUtc { get; init; }
+    public required string ChangedBy { get; init; }
+    public string? Reason { get; init; }
+}

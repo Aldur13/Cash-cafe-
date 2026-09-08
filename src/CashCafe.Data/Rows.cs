@@ -204,4 +204,54 @@ internal static class Rows
                             WHERE l.student_id = s.id AND l.is_enabled = 1) AS has_login
         FROM students s
         """;
+
+    public sealed class AuditRow
+    {
+        public long id { get; set; }
+        public string occurred_utc { get; set; } = string.Empty;
+        public string actor { get; set; } = string.Empty;
+        public string session_id { get; set; } = string.Empty;
+        public string action { get; set; } = string.Empty;
+        public string? entity_type { get; set; }
+        public long? entity_id { get; set; }
+        public string? old_value { get; set; }
+        public string? new_value { get; set; }
+        public string? detail { get; set; }
+
+        public AuditEntry ToDomain() => new()
+        {
+            Id = id,
+            OccurredUtc = Rows.ParseTime(occurred_utc),
+            Actor = actor,
+            SessionId = session_id,
+            Action = action,
+            EntityType = entity_type,
+            EntityId = entity_id,
+            OldValue = old_value,
+            NewValue = new_value,
+            Detail = detail,
+        };
+    }
+
+    public sealed class PriceRow
+    {
+        public long item_id { get; set; }
+        public string item_name { get; set; } = string.Empty;
+        public long price_ore { get; set; }
+        public string valid_from_utc { get; set; } = string.Empty;
+        public string? valid_to_utc { get; set; }
+        public string changed_by { get; set; } = string.Empty;
+        public string? reason { get; set; }
+
+        public PriceHistoryEntry ToDomain() => new()
+        {
+            ItemId = item_id,
+            ItemName = item_name,
+            Price = new Money(price_ore),
+            ValidFromUtc = Rows.ParseTime(valid_from_utc),
+            ValidToUtc = valid_to_utc is null ? null : Rows.ParseTime(valid_to_utc),
+            ChangedBy = changed_by,
+            Reason = reason,
+        };
+    }
 }
