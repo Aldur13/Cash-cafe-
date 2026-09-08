@@ -6,10 +6,12 @@ Instead of typing balances by hand, you pick a student, pick what they bought,
 and press **Execute**. The program does the maths, writes down what happened,
 and never lets an account go below **-10 kr**.
 
-> **Status: being built.**
-> The money rules, the database and the **student website** are written and
-> tested (118 tests). The till and admin panel are fully specified in the
-> [wiki](docs/wiki/Home.md) but not written yet — see [Roadmap](docs/wiki/15-Roadmap.md).
+> **Status: working, not yet packaged.**
+> The till, the admin panel, Excel import/export, backups and the student
+> website are all written, with **263 automated tests**. What is left is the
+> installer, and a pass over the Windows screens on a real Windows machine —
+> they compile and are covered by tests, but nobody has clicked through them
+> yet. See [Roadmap](docs/wiki/15-Roadmap.md).
 
 ---
 
@@ -143,7 +145,7 @@ network. See [Architecture](docs/wiki/10-Architecture.md).
 Needs the [.NET 8 SDK](https://dotnet.microsoft.com/download). Nothing else.
 
 ```bash
-dotnet test                                          # all 118 tests
+dotnet test                                          # all 263 tests
 dotnet run --project tools/CashCafe.Demo -- demo.db  # a café of invented students
 dotnet run --project src/CashCafe.Web \
     --urls http://127.0.0.1:5199 \
@@ -156,13 +158,25 @@ Then open <http://127.0.0.1:5199> and sign in as one of the addresses the demo p
 The development sign-in skips Google entirely so you can try it without credentials; it
 only works on a Development build, from the machine itself, with the setting on.
 
+To run the till itself, on Windows:
+
+```powershell
+dotnet run --project src/CashCafe.App
+```
+
+The whole solution builds on Linux and macOS too — the WPF project sets
+`EnableWindowsTargeting` — but only Windows can run the till.
+
 | Project | What it is |
 |---|---|
 | `src/CashCafe.Domain` | Money, the −10 kr floor, the purchase basket, name search. No dependencies |
 | `src/CashCafe.Data` | SQLite schema, the append-only ledger, repositories, the verifier |
+| `src/CashCafe.Excel` | Reads the old sheet, writes every export |
+| `src/CashCafe.Backup` | Snapshots, AES-256 encryption, restore, retention |
 | `src/CashCafe.Web` | The student site and the staff busyness slider |
+| `src/CashCafe.App.Core` | The till and admin logic — tested, no Windows needed |
+| `src/CashCafe.App` | The WPF windows themselves (Windows only to run) |
 | `tools/CashCafe.Demo` | Makes a database of invented students to try things with |
-| `src/CashCafe.App` | The WPF till — **not written yet** |
 
 ## Licence
 

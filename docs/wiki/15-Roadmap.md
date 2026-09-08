@@ -18,10 +18,20 @@ Everything described in this wiki:
 - [ ] Swedish and English interface
 - [ ] Installer and portable build
 
-**Built so far:** the money rules and the −10 kr floor, the append-only ledger and the
-SQLite schema, student/item/report repositories, the database verifier, and the
-[student site](18-Student-Site.md) with school-account sign-in and the busyness slider.
-Still to write: the WPF till and admin panel, the Excel import/export, and backups.
+**Built so far:** everything on the list above except the installer, with 263 automated
+tests — the money rules and the −10 kr floor, the append-only ledger and schema, the
+repositories and the database verifier, Excel import and export, backups with encryption
+and restore, the [student site](18-Student-Site.md), and the WPF till and admin panel.
+
+**Not yet done, and honestly stated:**
+
+| Piece | Where it stands |
+|---|---|
+| The installer and portable zip | Not written. `dotnet publish` produces a working build today |
+| Native Google Drive / OneDrive destinations | Not written. Pointing a folder destination at a desktop sync folder covers the same ground and is what most schools should do anyway ([Cloud Sync & Backup](11-Cloud-Sync-and-Backup.md#6-any-other-cloud-without-integration)) |
+| The WPF screens, run | Compile- and XAML-verified only; nobody has clicked through them. The behaviour behind them is covered by tests, but the layout needs a pass on a real Windows machine |
+| PDF statements | The Excel and CSV statement exports work; the PDF one is not written |
+| Scheduled exports and the backup scheduler | The backup engine and export both work and are tested; nothing yet runs them on a timer |
 
 **Definition of done:** the café runs a full week on it without opening Excel
 once, and a restore has been tested on a second computer.

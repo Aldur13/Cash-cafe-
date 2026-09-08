@@ -45,22 +45,40 @@ CashCafe.sln
 │   │   ├── NetworkShareDestination.cs
 │   │   ├── GoogleDriveDestination.cs
 │   │   └── OneDriveDestination.cs
-│   └── CashCafe.App/             WPF: views, view models, DI, startup
-│       ├── Views/CafeView.xaml, AdminView.xaml, …
-│       ├── ViewModels/CafeViewModel.cs, …
-│       └── Services/StudentSearchIndex.cs, SessionService.cs
+│   ├── CashCafe.Web/             ASP.NET Core: the student site and staff slider
+│   ├── CashCafe.App.Core/        view models and services — plain net8.0, no WPF
+│   │   ├── ViewModels/CafeViewModel.cs, AdminViewModel.cs
+│   │   └── Services/CafeContext.cs, AdminSession.cs, AdminPin.cs
+│   └── CashCafe.App/             WPF: XAML views and startup, nothing else
+│       ├── Views/CafeView.xaml, AdminWindow.xaml, PinDialog.xaml, …
+│       ├── Converters/           Money, balance colour, visibility
+│       └── App.xaml.cs           the startup sequence
+├── tools/
+│   └── CashCafe.Demo/            writes a café of invented students to try things with
 ├── tests/
 │   ├── CashCafe.Domain.Tests/    the rules — the most important tests
 │   ├── CashCafe.Data.Tests/      against a real temporary SQLite file
 │   ├── CashCafe.Excel.Tests/     a corpus of deliberately messy sheets
-│   └── CashCafe.App.Tests/       view model behaviour
+│   ├── CashCafe.Backup.Tests/    encrypt, restore, retention, corruption
+│   ├── CashCafe.Web.Tests/       the site, booted for real
+│   └── CashCafe.App.Tests/       the till and admin panel, against a real database
 ├── installer/                    Inno Setup script
 └── docs/wiki/                    this documentation
 ```
 
-Dependencies point one way only: `App → Excel/Backup/Data → Domain`.
+Dependencies point one way only: `App → App.Core → Excel/Backup/Data → Domain`.
 `Domain` references nothing, which is what lets the money rules be tested
 exhaustively in milliseconds.
+
+### Why the view models are not in the WPF project
+
+The plan originally put them there. They were moved because a `net8.0-windows`
+WPF assembly cannot be loaded by a test runner on anything but Windows — and,
+more to the point, because the till's behaviour is the part most worth testing
+and least worth eyeballing. `CashCafe.App.Core` is plain `net8.0` and references
+no WPF at all, so `CafeViewModel` and `AdminViewModel` are driven by real tests
+against a real database on any machine. The WPF project keeps XAML, converters
+and the startup sequence: the parts a person has to look at anyway.
 
 ## Libraries
 
@@ -153,6 +171,14 @@ Target: **under 2 seconds** on a school laptop with a spinning disk.
   a duplicated student, `femtio` — each with an expected result file.
 - **Smoke test**: a scripted end-to-end run — import, sell, hit the floor, undo,
   export, back up, restore, verify — executed on every release build.
+
+## Building on a machine that is not Windows
+
+The WPF project sets `<EnableWindowsTargeting>true</EnableWindowsTargeting>`, so
+`dotnet build` succeeds on Linux and macOS and in CI. That gives compile and XAML
+verification everywhere; **running** it still needs Windows. Everything else in
+the solution — domain, data, Excel, backups, the website, and every test project
+— builds and runs anywhere.
 
 ## Build and release
 
