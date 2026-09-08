@@ -1,0 +1,74 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Balance";
+    var balanceClass = Model.View.Balance.IsNegative ? "negative" : Model.View.IsLow ? "low" : "";
+}
+
+<h1>@Model.View.Name</h1>
+<p class="muted">@(Model.View.ClassName ?? "")</p>
+
+<div class="card">
+    <p class="muted">Your balance</p>
+    <p class="balance @balanceClass">@Model.View.Balance</p>
+
+    @if (Model.View.Balance.IsNegative)
+    {
+        <p class="muted">
+            You are in debt to the café. You can still spend @Model.View.CanSpend
+            before you reach the @Model.View.Floor limit.
+        </p>
+    }
+    else
+    {
+        <p class="muted">You can spend @Model.View.CanSpend before reaching the @Model.View.Floor limit.</p>
+    }
+
+    @if (Model.View.IsLow && !Model.View.Balance.IsNegative)
+    {
+        <div class="notice"><p>Running low — ask at home for a Swish to the café.</p></div>
+    }
+</div>
+
+@if (Model.ShowBusyness)
+{
+    <div class="card">
+        <p class="muted">The café right now</p>
+        <p style="font-size:20px;font-weight:600;margin:4px 0;">@Model.Busyness.ToEnglish()</p>
+        <div class="busy level-@((int)Model.Busyness)">
+            @for (var step = 1; step <= 4; step++)
+            {
+                <span class="@(step <= (int)Model.Busyness ? "on" : "")"></span>
+            }
+        </div>
+        <p class="muted">@Model.Busyness.QueueHint()</p>
+        @if (Model.BusynessUpdated is not null)
+        {
+            <p class="muted">Set by the café at @Model.BusynessUpdated.Value.ToLocalTime().ToString("HH:mm")</p>
+        }
+    </div>
+}
+
+@if (Model.View.History.Count > 0)
+{
+    <h2>Your café history</h2>
+    <table>
+        <thead>
+            <tr><th>When</th><th>What</th><th style="text-align:right">Amount</th></tr>
+        </thead>
+        <tbody>
+        @foreach (var entry in Model.View.History)
+        {
+            <tr class="@(entry.IsReversed ? "cancelled" : "")">
+                <td>@entry.When.ToString("d MMM HH:mm")</td>
+                <td>@entry.Description</td>
+                <td class="amount @(entry.Amount.IsNegative ? "" : "plus")">@entry.Amount</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <p class="muted">
+        A line with a stroke through it was cancelled, and the money went back.
+        If something here looks wrong, ask in the café — they can show you the whole record.
+    </p>
+}

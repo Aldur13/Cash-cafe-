@@ -59,7 +59,8 @@ account of what happened, including the mistakes.
 |---|---|---|
 | **Café staff** (students/volunteers at the counter) | Sell items, take deposits, undo their own last purchase | Just open the program — no login for the Café screen |
 | **Café administrator** (the responsible teacher) | Prices, items, student list, reports, import/export, backups, corrections | Admin PIN |
-| **School IT** | Install, backup destination, restore | Windows admin rights on the café PC |
+| **School IT** | Install, backup destination, restore, and — if the site is used — DNS, a certificate and the app registration | Windows admin rights on the café PC |
+| **Students** | See their own balance and how busy the café is, on the optional website | Their existing school Google or Microsoft account |
 
 The Café screen is deliberately **not** behind a login. A queue of hungry students
 is not the moment for a password, and staff change constantly. Everything that
@@ -78,12 +79,17 @@ Café *session* performed each sale (see [Data Model](09-Data-Model.md)).
 - Admin panel: items, prices, students, reports, audit log.
 - Excel/CSV export and import.
 - Local backup + optional encrypted backup to Google Drive / OneDrive / a network folder.
+- An optional [student website](18-Student-Site.md) on the school network: a student signs
+  in with their school account to see their own balance and how busy the café is, and
+  staff set the busyness with a slider.
 
 **Explicitly out of scope for now:**
 
 - Any live connection to Swish or a bank. Deposits are entered by hand.
   (See [Roadmap](15-Roadmap.md) for how this would be added.)
-- Parent-facing app or website.
+- A **guardian**-facing app or website. (The student site is in scope; extending it to
+  parents needs guardian identity checks and its own assessment.)
+- Reaching the student site from outside the school network.
 - Card readers, barcode scanners, receipt printers (the design leaves room — see Roadmap).
 - Several tills selling at the same time from different computers.
 

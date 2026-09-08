@@ -7,8 +7,17 @@ No. The program is fully offline. The internet is only used if you switch on
 cloud backup. → [Architecture](10-Architecture.md)
 
 ### Do students or parents need accounts?
-No. There are no accounts at all. One admin PIN on the café computer.
-→ [Admin Panel](05-Admin-Panel.md)
+Not for the café itself. If the school turns the optional website on, students sign in
+there with the **school account they already have** — the café never stores a password.
+Parents have no account. → [The Student Site](18-Student-Site.md)
+
+### Can students check their balance on their phone?
+Yes, if the school turns the website on. It works on the school network only.
+→ [The Student Site](18-Student-Site.md)
+
+### How do students know if there's a queue?
+Staff drag a slider from Closed to Packed, and it shows on every student's page.
+→ [The Student Site](18-Student-Site.md#the-busyness-slider)
 
 ### Can a student go below -10 kr?
 Not through a purchase — the program refuses. An admin can raise that one
@@ -74,6 +83,11 @@ program gives you the reports to do it and the audit trail to explain it.
 Yes — use the portable build on a USB stick with test data, or take a backup
 first. Restoring puts everything back exactly as it was.
 → [Installation](02-Installation.md#portable-version)
+
+### Can a student see someone else's balance on the site?
+No. There is no page or parameter on the site that names a student — the only id it uses
+comes from the signed-in session, and a test asserts that trying fails.
+→ [Security & Privacy](12-Security-and-Privacy.md#5b-the-student-site)
 
 ### Where is our data, physically?
 `C:\ProgramData\CashCafe\cashcafe.db` on the café computer. That one file is the

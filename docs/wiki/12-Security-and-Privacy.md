@@ -22,16 +22,17 @@ happens if it leaves the computer, and what the school has to decide.
 | Anything sensitive? | **No.** No personal identity number, no address, no phone, no email, no photo, no health, allergy or dietary information, no card or bank details, no marks, no attendance |
 | Where is it? | One file on one school computer, in the café |
 | Does it go to the internet? | **Only if the school switches on cloud backup**, and then only as an **AES-256 encrypted** file the provider cannot read |
-| Does it need the internet to work? | No. It runs entirely offline |
-| Are there user accounts or passwords? | No accounts. One local admin PIN on that one computer |
+| Does it need the internet to work? | No. The till runs entirely offline |
+| Is there a website? | Optionally. A student site **on the school network only**, off until the school turns it on — see [§5b](#5b-the-student-site) |
+| Are there user accounts or passwords? | **The café stores no password of any kind.** The till has one local admin PIN (stored as a hash). Students sign in to the site with their existing school Google or Microsoft account, at the provider |
 | Does any data go to the developer or any third party? | **No.** There is no vendor server, no telemetry, no analytics, no crash reporting to anyone |
 | Can a student's data be deleted on request? | Yes — see [Erasure](#7-the-rights-of-students-and-parents) |
 | Who can see who bought what? | Whoever has the admin PIN, on that computer |
 | Payment data? | None. The system records that money arrived; the actual payment happens in Swish, entirely outside this program |
 
-**The one thing the school must actually decide:** whether backups may go to
-Google Drive / OneDrive, and who holds the encryption passphrase. Everything
-else is a default that is already conservative.
+**The two things the school must actually decide:** whether backups may go to
+Google Drive / OneDrive and who holds the encryption passphrase; and whether to
+turn the student site on. Both are off or conservative by default.
 
 ---
 
@@ -58,6 +59,15 @@ Per transaction: date and time, the student, the amount, what was bought and at
 what price, which till or admin recorded it, and — for deposits — the method
 (`Swish` / `Cash`) and an optional reference the café types in from its own Swish
 report.
+
+### About a sign-in to the website
+
+Only if the school turns the site on, and only for students whose address an admin
+registered: the **school email address**, which **provider** it belongs to, that provider's
+**opaque account id**, and the times the link was made, first used, and last used.
+
+No password. No password hash. No token that could be used to sign in anywhere. Nothing
+read from the account beyond the address that identifies it.
 
 ### What is *not* stored, at all
 
@@ -86,13 +96,21 @@ should talk to its DPO first.
 ## 3. Where the data lives
 
 ```
-   ┌──────────────────────────────────────────────┐
+                        ┌───────────────────────────────┐
+                        │  Student phones and laptops   │
+                        │  ON THE SCHOOL NETWORK ONLY   │
+                        └───────────────┬───────────────┘
+                                        │ HTTPS, sees only
+                                        │ the signed-in student's
+                                        │ own balance
+   ┌────────────────────────────────────┴─────────┐
    │  The café computer (school property, in the  │
    │  café, physically in the school)             │
    │                                              │
    │   C:\ProgramData\CashCafe\cashcafe.db   ←──  │  the only live copy
    │   C:\ProgramData\CashCafe\Backups\      ←──  │  local backups
    │   Windows Credential Manager            ←──  │  PIN hash, cloud token
+   │   CashCafe.Web (optional, off by default)    │  the student site
    └───────────────────┬──────────────────────────┘
                        │  optional, off by default
                        │  AES-256 encrypted file, one-way
@@ -103,6 +121,9 @@ should talk to its DPO first.
    │  OneDrive                                    │
    └──────────────────────────────────────────────┘
 ```
+
+The student site adds no new copy of anything: it reads the same database file on the
+same computer, and it is not reachable from outside the school network.
 
 There is **no other copy and no other destination**. Specifically:
 
@@ -119,17 +140,22 @@ There is **no other copy and no other destination**. Specifically:
 
 ## 4. Who can do what
 
-| | Café screen | Admin panel |
-|---|---|---|
-| Sell items, take deposits | ✔ | ✔ |
-| Undo own purchase (15 min) | ✔ | ✔ |
-| See a balance | ✔ (of the selected student) | ✔ |
-| See the full purchase history of a student | ✘ | ✔ |
-| Change prices or items | ✘ | ✔ |
-| Correct a balance | ✘ | ✔ (with a written reason) |
-| Export data | ✘ | ✔ |
-| Change settings, backups | ✘ | ✔ |
-| Delete anything | ✘ | ✘ — nobody can. Corrections are additions |
+| | Café screen (the till) | Student site | Staff page on the site | Admin panel |
+|---|---|---|---|---|
+| Sell items, take deposits | ✔ | ✘ | ✘ | ✔ |
+| Undo own purchase (15 min) | ✔ | ✘ | ✘ | ✔ |
+| See a balance | ✔ (of the selected student) | ✔ **their own only** | ✘ | ✔ |
+| See a student's purchase history | ✘ | ✔ **their own only** | ✘ | ✔ |
+| See today's café totals | ✘ | ✘ | ✔ | ✔ |
+| Set how busy the café is | ✘ | ✘ | ✔ | ✔ |
+| Change prices or items | ✘ | ✘ | ✘ | ✔ |
+| Correct a balance | ✘ | ✘ | ✘ | ✔ (with a written reason) |
+| Export data | ✘ | ✘ | ✘ | ✔ |
+| Change settings, backups | ✘ | ✘ | ✘ | ✔ |
+| Delete anything | ✘ | ✘ | ✘ | ✘ — nobody can. Corrections are additions |
+
+**Nothing on the website can move money.** It is a window onto the ledger, plus one
+setting — how busy the café is — that staff can change and that says nothing about anyone.
 
 **Why the till has no login:** the counter is staffed by rotating student
 volunteers during a five-minute break. A password there would be shared,
@@ -222,6 +248,96 @@ The honest answer, and the one to give:
 
 ---
 
+## 5b. The student site
+
+Optional, **off until the school turns it on**, and reachable **only from the school
+network**. Full description in [The Student Site](18-Student-Site.md); this is the part a
+security review needs.
+
+### What it is
+
+A small web application running on the café computer, reading the same database the till
+writes. A student signs in with their school account and sees **their own** balance, their
+own café history, and how busy the café is. Staff get one extra page holding the busyness
+slider and today's totals.
+
+### What it changes about the risk picture
+
+Being honest about this, because the answer before this feature existed was "there is no
+server and no login, so there is nothing to attack":
+
+| | Before | Now |
+|---|---|---|
+| Something listening on the network | No | Yes — on the school network only |
+| Accounts | None | Sign-in via the school's existing Google/Microsoft accounts |
+| Passwords stored by the café | None | **Still none** |
+| Personal data leaving the café computer | Only encrypted backups | Only what a student sees about themselves, on the school network |
+| Ways to change a balance | The till, behind the counter | **Unchanged — the site cannot move money** |
+
+So it is a real addition to the attack surface, and the design answers it by making the
+site as small as a thing can be: it reads one table, it writes one setting, it holds no
+credentials, and it is not on the internet.
+
+### The controls, specifically
+
+**Authentication is not ours.** Sign-in happens at Google or Microsoft. The café never
+sees a password, cannot leak one, and cannot have one stolen. The school's own MFA and
+conditional access apply automatically, because it is the school's tenant doing the
+authenticating.
+
+**A school account is not, by itself, permission.** The site only recognises addresses an
+admin deliberately registered against a student. Anyone else — including a real student
+with a real school account the café has not registered — gets a polite sentence and no
+data. The application requests no permission from the provider beyond "who is this":
+no mail, no files, no directory, no groups.
+
+**An address is bound to one account, once.** The first sign-in binds the registered
+address to that account's stable id. A second account presenting the same address is
+refused rather than being handed somebody's balance.
+
+**The session is built from our own database.** Nothing the provider says becomes a
+session on its own: the site looks the account up in its own table and issues its own
+cookie holding a student id. The cookie is `HttpOnly`, `SameSite=Lax`, `Secure` on HTTPS,
+and lasts 8 hours.
+
+**There is nothing to tamper with.** No page, route, query string or form field on the
+site names a student. The only student id it ever uses comes from the signed-in session,
+so there is no parameter to change to see somebody else. There is an automated test that
+tries exactly that and asserts it fails.
+
+**Least privilege on the staff page.** Staff are ordinary signed-in users whose school
+address appears in a configured list. The staff page can set the busyness and read today's
+totals. It cannot change a price, correct a balance, see an individual's history, or
+export anything — all of that stays in the till behind the admin PIN. A student who posts
+directly to the staff page is refused; there is a test for that too.
+
+**Ordinary web hardening.** Anti-forgery tokens on every form, rate limiting on sign-in,
+`X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`,
+`noindex`, and a Content-Security-Policy of `default-src 'self'` — which the site can
+honestly set because it loads no scripts, styles or fonts from anywhere else at all.
+
+**Turning it off is instant and total.** One setting. While it is off, every page — even
+for someone already signed in — becomes a short explanation. The café keeps trading; the
+site is never a dependency.
+
+### What the school has to do
+
+- Decide to turn it on at all. It works perfectly well switched off.
+- Register the application in the school's own Google Workspace or Entra tenant.
+- Give it an internal DNS name and a certificate from the school's own CA, and
+  **run it over HTTPS** — on a school Wi-Fi network, plain HTTP means the session cookie
+  travels readable.
+- Keep `StaffEmails` short and to school addresses.
+- Register students' addresses deliberately, and remove them when a student leaves.
+
+### What it is not
+
+Not reachable from home. Not a way to pay. Not a way for a guardian to see a child's
+account. Not a way for anyone to see anyone else. Adding any of those would be a new
+feature with its own assessment — see [Roadmap](15-Roadmap.md).
+
+---
+
 ## 6. GDPR in practical terms
 
 For the school's documentation. The wording is for the school to adopt or amend
@@ -233,10 +349,10 @@ with its DPO.
 | **Processor** | None for normal operation — the software runs locally and the developer receives nothing. If cloud backup is enabled, Google or Microsoft act as processors, under the school's existing agreement |
 | **Purpose** | Administering a school café: keeping track of prepaid balances so students can buy food without cash |
 | **Legal basis** | Normally **Article 6(1)(e)**, a task carried out in the public interest, or **6(1)(b)/(f)** for the café as a voluntary service. Consent is generally the wrong basis in a school setting because it is not freely given. **The school's DPO decides** |
-| **Categories of data subject** | Students who choose to use the café; staff operating it (only as the operator label on a transaction) |
-| **Categories of data** | Name, class, balance, café purchase history, deposits |
+| **Categories of data subject** | Students who choose to use the café; staff operating it (as the operator label on a transaction, and — where the site is used — the school address that moved the busyness slider) |
+| **Categories of data** | Name, class, balance, café purchase history, deposits. Plus, for students using the site, their school email address and the provider's account id |
 | **Special categories (Art. 9)** | **None** |
-| **Recipients** | Nobody, unless cloud backup is enabled — then the school's own cloud provider, receiving encrypted files |
+| **Recipients** | Nobody, unless cloud backup is enabled — then the school's own cloud provider, receiving encrypted files. If the student site is enabled, the school's own identity provider learns that the person signed in to a school application, which it already knows for every other school system |
 | **Transfers outside the EU/EEA** | None by the software itself. If cloud backup is enabled, governed by the school's existing agreement with its provider and its choice of data region; the encryption means the provider holds no readable personal data |
 | **Retention** | See below — a decision for the school |
 | **Security measures** | Local storage, admin PIN (hashed), append-only audit log, encrypted backups, narrow cloud scopes, recommended full-disk encryption, physically secured computer |
@@ -362,6 +478,13 @@ Nine things, and then this is signed off:
 - [ ] A **restore has been tested** once, on a spare computer.
 - [ ] The café system is mentioned in the school's **information to students and guardians**, and a **retention decision** has been recorded.
 
+If the **student site** is switched on, four more:
+
+- [ ] It is served over **HTTPS** with a certificate school devices trust, on an internal name.
+- [ ] It is reachable **only from the school network** — confirmed with school IT, not assumed.
+- [ ] The application is registered in the **school's own** Google Workspace or Entra tenant, restricted to the school's organisation.
+- [ ] `StaffEmails` contains only the people who actually run the café, and is reviewed each term.
+
 ## 11. Questions a board might ask, answered
 
 **"Can a student hack it and give themselves money?"**
@@ -391,6 +514,22 @@ plain-CSV copy inside every backup. Nothing is locked to a person or a company.
 No, because the developer processes nothing — there is no service, no server and
 no support access to the data. If the school later buys hosted support from
 someone, that would need one.
+
+**"Could a student see another student's balance on the website?"**
+Not through the site. There is no page, link, or parameter that names a student — the
+only student id it ever uses comes from the signed-in session, and there is an automated
+test that tries to reach another student's data and asserts it cannot. A school account
+the café has not registered sees nothing at all.
+
+**"What if a student leaves their phone unlocked?"**
+Whoever picks it up sees that student's café balance and what they bought, for up to
+8 hours until the session expires. That is the honest answer, and it is the same exposure
+as any other school system on that phone. Signing out ends it immediately, and an admin
+can switch a student's login off at any time.
+
+**"Do we have to have the website?"**
+No. It ships switched off, the till does not need it, and a school that would rather not
+run anything on the network can leave it off forever.
 
 **"Is it more secure than the Excel sheet we use now?"**
 Yes, and by a wide margin. The Excel sheet has no access control, no history, no

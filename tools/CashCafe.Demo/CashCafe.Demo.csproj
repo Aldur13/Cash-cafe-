@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>cashcafe-demo</AssemblyName>
+    <RootNamespace>CashCafe.Demo</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/CashCafe.Data/CashCafe.Data.csproj" />
+  </ItemGroup>
+</Project>

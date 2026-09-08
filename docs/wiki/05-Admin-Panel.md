@@ -208,6 +208,23 @@ provides:
 
 ---
 
+## Student site
+
+Present only when the [student website](18-Student-Site.md) is installed.
+
+- **On / off** — the master switch. Off by default; turning it off cuts every session
+  immediately, including students already signed in.
+- **What students see** — balance always; purchase history and the busyness indicator
+  can each be switched off; how many days of history to show.
+- **How busy are we** — the same slider staff have on their phones. Café staff and the
+  till are always looking at the same value.
+- **Sign-ins** — the list of school addresses registered against students: who, which
+  provider, when it was registered, whether it has been used yet, and when it was last
+  seen. Add one, switch one off, or remove one. A student cannot see anything until an
+  address is registered here.
+- **Staff** — a reminder of which addresses are configured as staff on the site, and
+  where to change them (`appsettings.json` next to the site).
+
 ## Settings
 
 | Setting | Default | Notes |
@@ -228,6 +245,10 @@ provides:
 | Log retention | 30 days | Application logs, not the ledger |
 | Audit log retention | Forever | Cannot be shortened from the UI on purpose |
 | Check for updates | On | |
+| Student site enabled | **Off** | The website master switch |
+| Site: show purchase history | On | Off leaves only the balance |
+| Site: show busyness | On | Off hides the indicator |
+| Site: history days | 90 | 0 shows everything |
 
 ---
 

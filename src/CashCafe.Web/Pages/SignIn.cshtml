@@ -1,0 +1,51 @@
+@page
+@model SignInModel
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<h1>Your café balance</h1>
+<p class="muted">Sign in with your school account to see your balance.</p>
+
+@if (Model.Message is not null)
+{
+    <div class="notice bad"><p>@Model.Message</p></div>
+}
+
+<div class="card">
+    @if (Model.GoogleAvailable)
+    {
+        <form method="post" asp-page-handler="Challenge">
+            <input type="hidden" name="provider" value="Google" />
+            <button class="btn primary" type="submit">Sign in with the school's Google account</button>
+        </form>
+    }
+
+    @if (Model.MicrosoftAvailable)
+    {
+        <form method="post" asp-page-handler="Challenge">
+            <input type="hidden" name="provider" value="Microsoft" />
+            <button class="btn primary" type="submit">Sign in with the school's Microsoft account</button>
+        </form>
+    }
+
+    @if (!Model.GoogleAvailable && !Model.MicrosoftAvailable && !Model.DevelopmentSignInAvailable)
+    {
+        <p>No sign-in method has been set up yet. Ask the café.</p>
+    }
+
+    @if (Model.DevelopmentSignInAvailable)
+    {
+        <hr />
+        <p class="muted">Development sign-in — this never appears on a real installation.</p>
+        <form method="post" asp-page-handler="Development">
+            <input type="email" name="email" placeholder="school address" required />
+            <button class="btn" type="submit">Sign in</button>
+        </form>
+    }
+</div>
+
+<p class="muted">
+    The café can see your name, your class and what you bought here — the same things that
+    were in the old paper list. Nothing else about you is stored.
+</p>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>@ViewData["Title"] — Cash Café</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header class="bar">
+        <a class="brand" href="/">Cash Café</a>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <form method="post" action="/SignOut" class="inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="link">Sign out</button>
+            </form>
+        }
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>The café's own system. Your balance is kept on a school computer in the café.</p>
+    </footer>
+</body>
+</html>

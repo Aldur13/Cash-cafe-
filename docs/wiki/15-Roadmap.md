@@ -18,6 +18,11 @@ Everything described in this wiki:
 - [ ] Swedish and English interface
 - [ ] Installer and portable build
 
+**Built so far:** the money rules and the −10 kr floor, the append-only ledger and the
+SQLite schema, student/item/report repositories, the database verifier, and the
+[student site](18-Student-Site.md) with school-account sign-in and the busyness slider.
+Still to write: the WPF till and admin panel, the Excel import/export, and backups.
+
 **Definition of done:** the café runs a full week on it without opening Excel
 once, and a restore has been tested on a second computer.
 
@@ -92,7 +97,8 @@ Honest "no"s, so nobody spends time on them:
 
 | Idea | Why not |
 |---|---|
-| A parent app or website showing balances | Needs a server, accounts for guardians, authentication and a much larger privacy assessment. Enormous compared to the problem it solves |
+| A **guardian**-facing app or website | Guardian accounts need identity checks tying an adult to a child, and a much larger privacy assessment. The *student* site now exists ([page 18](18-Student-Site.md)); extending it to parents is a different project |
+| Reaching the student site from home | It would need public hosting, a public certificate, and a considerably bigger conversation with the school board. Students buy food at school |
 | Cloud-hosted version of the whole system | Turns a local school tool into a service someone has to operate and secure forever |
 | Mac and Linux versions | The café has a Windows computer. The domain and data layers are portable if that ever changes |
 | Loyalty points, discounts, campaigns | A school café is not a shop |

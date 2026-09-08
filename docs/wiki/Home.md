@@ -27,6 +27,7 @@ developer later.
 | [13 — Troubleshooting](13-Troubleshooting.md) | What to do when something looks wrong |
 | [14 — Keyboard Shortcuts](14-Keyboard-Shortcuts.md) | Full key map for fast serving |
 | [17 — FAQ](17-FAQ.md) | Short answers to common questions |
+| [18 — The Student Site](18-Student-Site.md) | The website where students check their own balance, and the busyness slider staff set |
 
 ### For whoever maintains or builds it
 | Page | What's in it |
@@ -40,9 +41,16 @@ developer later.
 | Page | What's in it |
 |---|---|
 | [11 — Cloud Sync & Backup](11-Cloud-Sync-and-Backup.md) | How Google Drive / OneDrive / network backup works, in full |
+| [18 — The Student Site](18-Student-Site.md) | What the website exposes, how students sign in, and what it deliberately does not do |
 | [12 — Security & Privacy](12-Security-and-Privacy.md) | **The document to hand the school board.** What data exists, where it goes, GDPR, encryption, retention, and why cloud backup is not a security problem |
 
 ---
+
+## Where the project is
+
+The **domain, database and student site are built and tested**; the WPF till and admin
+panel are specified here and not yet written. Every page still describes the finished
+system — where something is not built yet, it says so.
 
 ## The one-paragraph summary
 

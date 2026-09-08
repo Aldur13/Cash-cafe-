@@ -1,0 +1,97 @@
+@page
+@model StaffModel
+@{
+    ViewData["Title"] = "Café staff";
+}
+
+<h1>Café staff</h1>
+<p class="muted">Signed in as @Model.StaffEmail</p>
+
+@if (Model.Saved)
+{
+    <div class="notice"><p>Saved. Students see this straight away.</p></div>
+}
+
+<div class="card">
+    <h2 style="margin-top:0">How busy are we?</h2>
+    <p class="muted">
+        Students see this on their own page, so they know whether to come now or wait.
+        Move the slider and it updates for everyone.
+    </p>
+
+    <form method="post" id="busyness-form">
+        @Html.AntiForgeryToken()
+
+        <p style="font-size:22px;font-weight:600;margin:8px 0;" id="busyness-label">
+            @Model.Current.ToEnglish()
+        </p>
+
+        <div class="busy level-@((int)Model.Current)">
+            @for (var step = 1; step <= 4; step++)
+            {
+                <span class="@(step <= (int)Model.Current ? "on" : "")"></span>
+            }
+        </div>
+
+        <input class="slider" type="range" name="level" min="0" max="4" step="1"
+               value="@((int)Model.Current)" list="busyness-steps"
+               aria-label="How busy the café is" />
+
+        <datalist id="busyness-steps">
+            @for (var step = 0; step <= 4; step++)
+            {
+                <option value="@step"></option>
+            }
+        </datalist>
+
+        <div class="steps">
+            <span>Closed</span><span>Quiet</span><span>Steady</span><span>Busy</span><span>Packed</span>
+        </div>
+
+        <p style="margin-top:16px">
+            <button class="btn primary" type="submit">Set</button>
+        </p>
+    </form>
+
+    @if (Model.UpdatedUtc is not null)
+    {
+        <p class="muted">
+            Last changed @Model.UpdatedUtc.Value.ToLocalTime().ToString("HH:mm") today.
+            @if (Model.IsStale)
+            {
+                <strong>That was a while ago — is it still right?</strong>
+            }
+        </p>
+    }
+</div>
+
+<div class="card">
+    <h2 style="margin-top:0">Today</h2>
+    <table>
+        <tr><td>Sold</td><td class="amount">@Model.Today.Sold</td></tr>
+        <tr><td>Money in</td><td class="amount plus">@Model.Today.Received</td></tr>
+        <tr><td>Purchases</td><td class="amount">@Model.Today.PurchaseCount</td></tr>
+    </table>
+
+    @if (Model.Today.ByItem.Count > 0)
+    {
+        <h2>What sold</h2>
+        <table>
+            @foreach (var item in Model.Today.ByItem)
+            {
+                <tr>
+                    <td>@item.ItemName</td>
+                    <td class="amount">×@item.Quantity</td>
+                    <td class="amount">@item.Value</td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+
+<p class="muted">
+    Prices, items, corrections and reports are in the till program on the café computer.
+    This page is only the things staff need from a phone.
+</p>
+
+<script src="~/js/staff.js" defer></script>

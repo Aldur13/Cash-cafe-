@@ -6,9 +6,10 @@ Instead of typing balances by hand, you pick a student, pick what they bought,
 and press **Execute**. The program does the maths, writes down what happened,
 and never lets an account go below **-10 kr**.
 
-> **Status:** design/planning stage. This repository currently contains the
-> full specification (README + wiki). No code has been written yet — the wiki
-> is written precisely enough that the app can be built straight from it.
+> **Status: being built.**
+> The money rules, the database and the **student website** are written and
+> tested (118 tests). The till and admin panel are fully specified in the
+> [wiki](docs/wiki/Home.md) but not written yet — see [Roadmap](docs/wiki/15-Roadmap.md).
 
 ---
 
@@ -59,6 +60,32 @@ amount, press **Save**. (Automatic Swish matching is planned but not built — s
 
 ---
 
+## The student website
+
+Optional, **off until you turn it on**, and reachable **only from the school network**.
+
+A student opens it on their phone, signs in with their **school Google or Microsoft
+account** — no new password, the café never sees one — and sees:
+
+- **their own balance**, and what they can still spend before −10 kr;
+- **how busy the café is right now**, so they know whether to come or wait;
+- **their own café history**, with anything that was cancelled shown struck through.
+
+They can see nothing else, and nobody else's anything. The site cannot move money.
+
+### The busyness slider
+
+Café staff open `/Staff` on their phone and drag one slider:
+
+```
+Closed —— Quiet —— Steady —— Busy —— Packed
+```
+
+Every student's page updates. Staff also see today's totals and what sold. That's the
+whole staff page — prices, corrections and reports stay in the till behind the admin PIN.
+
+Setup, sign-in flow and the security details: **[The Student Site](docs/wiki/18-Student-Site.md)**.
+
 ## The admin panel
 
 Open with **Admin** and your PIN.
@@ -107,9 +134,35 @@ Start here:
 
 ## Built with
 
-Windows 10/11 · C# / .NET 8 · WPF · SQLite · ClosedXML.
-Runs completely offline. No account, no server, no internet required.
-See [Architecture](docs/wiki/10-Architecture.md).
+Windows 10/11 · C# / .NET 8 · WPF (the till) · ASP.NET Core (the site) · SQLite · ClosedXML.
+The till runs completely offline. The website is optional and never leaves the school
+network. See [Architecture](docs/wiki/10-Architecture.md).
+
+## Building it yourself
+
+Needs the [.NET 8 SDK](https://dotnet.microsoft.com/download). Nothing else.
+
+```bash
+dotnet test                                          # all 118 tests
+dotnet run --project tools/CashCafe.Demo -- demo.db  # a café of invented students
+dotnet run --project src/CashCafe.Web \
+    --urls http://127.0.0.1:5199 \
+    Cafe:DatabasePath=demo.db \
+    Cafe:EnableDevelopmentSignIn=true \
+    Cafe:StaffEmails:0=cafe.staff@skola.example
+```
+
+Then open <http://127.0.0.1:5199> and sign in as one of the addresses the demo printed.
+The development sign-in skips Google entirely so you can try it without credentials; it
+only works on a Development build, from the machine itself, with the setting on.
+
+| Project | What it is |
+|---|---|
+| `src/CashCafe.Domain` | Money, the −10 kr floor, the purchase basket, name search. No dependencies |
+| `src/CashCafe.Data` | SQLite schema, the append-only ledger, repositories, the verifier |
+| `src/CashCafe.Web` | The student site and the staff busyness slider |
+| `tools/CashCafe.Demo` | Makes a database of invented students to try things with |
+| `src/CashCafe.App` | The WPF till — **not written yet** |
 
 ## Licence
 
