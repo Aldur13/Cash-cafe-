@@ -1,0 +1,70 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="CashCafe.App.Views.ImportPreviewWindow"
+        Title="Import preview" Height="700" Width="1050"
+        WindowStartupLocation="CenterOwner">
+
+    <DockPanel Margin="16">
+        <TextBlock DockPanel.Dock="Top" Style="{StaticResource Heading}"
+                    Text="{Binding FileName, StringFormat='Import preview — {0}'}" />
+
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Foreground="{StaticResource Muted}"
+                   Margin="0,0,0,12"
+                   Text="Nothing has been written yet. Check the rows below, then press Import." />
+
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
+            <Border Style="{StaticResource CardPanel}" Margin="0,0,8,0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Rows read" Style="{StaticResource Label}" />
+                    <TextBlock x:Name="RowsReadText" FontSize="18" FontWeight="Bold" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardPanel}" Margin="0,0,8,0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="New students" Style="{StaticResource Label}" />
+                    <TextBlock x:Name="WillCreateText" FontSize="18" FontWeight="Bold" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardPanel}" Margin="0,0,8,0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Balances to adjust" Style="{StaticResource Label}" />
+                    <TextBlock x:Name="WillAdjustText" FontSize="18" FontWeight="Bold" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardPanel}" Margin="0,0,8,0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Errors — must be 0 to import" Style="{StaticResource Label}" />
+                    <TextBlock x:Name="ErrorsText" FontSize="18" FontWeight="Bold" Foreground="{StaticResource Bad}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardPanel}" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Net change to balances" Style="{StaticResource Label}" />
+                    <TextBlock x:Name="TotalChangeText" FontSize="18" FontWeight="Bold" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="Cancel — import nothing" IsCancel="True" Margin="0,0,8,0" MinWidth="180" />
+            <Button x:Name="ImportButton" Content="Import" MinWidth="140"
+                    Style="{StaticResource PrimaryButton}" Click="Import_Click" />
+        </StackPanel>
+
+        <DataGrid x:Name="RowsGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                  HeadersVisibility="Column" GridLinesVisibility="Horizontal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Row" Binding="{Binding Source.RowNumber}" Width="50" />
+                <DataGridTextColumn Header="Name in file" Binding="{Binding Source.Name}" Width="*" />
+                <DataGridTextColumn Header="Amount in file" Width="110"
+                                     Binding="{Binding Source.Amount, Converter={StaticResource Money}}" />
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="150" />
+                <DataGridTextColumn Header="Will do" Binding="{Binding Action}" Width="140" />
+                <DataGridTextColumn Header="Matched to" Binding="{Binding MatchedStudentName}" Width="160" />
+                <DataGridTextColumn Header="Change" Width="90"
+                                     Binding="{Binding EffectiveChange, Converter={StaticResource Money}}" />
+                <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

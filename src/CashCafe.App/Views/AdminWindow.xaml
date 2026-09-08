@@ -17,35 +17,53 @@
 
         <TabControl>
             <TabItem Header="Items">
-                <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" IsReadOnly="True"
-                          HeadersVisibility="Column" GridLinesVisibility="Horizontal">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                        <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="140" />
-                        <DataGridTextColumn Header="Price" Width="110"
-                                            Binding="{Binding Price, Converter={StaticResource Money}}" />
-                        <DataGridTextColumn Header="Key" Binding="{Binding ShortcutKey}" Width="60" />
-                        <DataGridCheckBoxColumn Header="On sale" Binding="{Binding IsAvailable}" Width="80" />
-                        <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" Width="80" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Add item…" MinWidth="140" Margin="0,0,8,0" Click="AddItem_Click" />
+                        <TextBlock VerticalAlignment="Center" Foreground="{StaticResource Muted}"
+                                   Text="Double-click a row to change its price, take it off sale, or remove it." />
+                    </StackPanel>
+                    <DataGrid x:Name="ItemsGrid" ItemsSource="{Binding Items}" AutoGenerateColumns="False"
+                              IsReadOnly="True" HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                              MouseDoubleClick="ItemsGrid_MouseDoubleClick">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="140" />
+                            <DataGridTextColumn Header="Price" Width="110"
+                                                Binding="{Binding Price, Converter={StaticResource Money}}" />
+                            <DataGridTextColumn Header="Key" Binding="{Binding ShortcutKey}" Width="60" />
+                            <DataGridCheckBoxColumn Header="On sale" Binding="{Binding IsAvailable}" Width="80" />
+                            <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" Width="80" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
 
             <TabItem Header="Students">
-                <DataGrid ItemsSource="{Binding Students}" AutoGenerateColumns="False" IsReadOnly="True"
-                          HeadersVisibility="Column" GridLinesVisibility="Horizontal">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" Width="*" />
-                        <DataGridTextColumn Header="Class" Binding="{Binding ClassName}" Width="80" />
-                        <DataGridTextColumn Header="Balance" Width="120"
-                                            Binding="{Binding Balance, Converter={StaticResource Money}}" />
-                        <DataGridTextColumn Header="Own limit" Width="110"
-                                            Binding="{Binding CreditLimit, Converter={StaticResource Money}}" />
-                        <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}" Width="70" />
-                        <DataGridCheckBoxColumn Header="Site login" Binding="{Binding HasLogin}" Width="80" />
-                        <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="200" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Add student…" MinWidth="140" Margin="0,0,8,0" Click="AddStudent_Click" />
+                        <Button Content="Import from Excel…" MinWidth="160" Margin="0,0,8,0" Click="Import_Click" />
+                        <Button Content="Export to Excel…" MinWidth="160" Margin="0,0,8,0" Click="Export_Click" />
+                        <TextBlock VerticalAlignment="Center" Foreground="{StaticResource Muted}"
+                                   Text="Double-click a row to deactivate a student or set their own limit." />
+                    </StackPanel>
+                    <DataGrid x:Name="StudentsGrid" ItemsSource="{Binding Students}" AutoGenerateColumns="False"
+                              IsReadOnly="True" HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                              MouseDoubleClick="StudentsGrid_MouseDoubleClick">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" Width="*" />
+                            <DataGridTextColumn Header="Class" Binding="{Binding ClassName}" Width="80" />
+                            <DataGridTextColumn Header="Balance" Width="120"
+                                                Binding="{Binding Balance, Converter={StaticResource Money}}" />
+                            <DataGridTextColumn Header="Own limit" Width="110"
+                                                Binding="{Binding CreditLimit, Converter={StaticResource Money}}" />
+                            <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}" Width="70" />
+                            <DataGridCheckBoxColumn Header="Site login" Binding="{Binding HasLogin}" Width="80" />
+                            <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="200" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
 
             <TabItem Header="Today">

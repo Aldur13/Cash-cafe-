@@ -34,8 +34,9 @@ and never lets an account go below **-10 kr**.
 
 1. Install **Cash Café** (double-click `CashCafe-Setup.exe`, click Next until it finishes).
 2. Open it. It asks for an admin PIN — choose one and write it down.
-3. Click **Import from Excel**, pick your old `.xlsx` sheet, check the preview looks right, click **Import**.
-4. Go to **Admin → Items** and add what the café sells (Toast 10 kr, Juice 15 kr, …).
+3. Press **F9** for the admin panel, go to the **Students** tab, click **Import from Excel…**,
+   pick your old `.xlsx` sheet, check the preview looks right, click **Import**.
+4. On the **Items** tab click **Add item…** for what the café sells (Toast 10 kr, Juice 15 kr, …).
 
 You are done. That was the setup.
 

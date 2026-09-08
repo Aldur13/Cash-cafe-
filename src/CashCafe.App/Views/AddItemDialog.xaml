@@ -1,0 +1,33 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="CashCafe.App.Views.AddItemDialog"
+        Title="Add item" Height="460" Width="440"
+        WindowStartupLocation="CenterOwner">
+
+    <StackPanel Margin="24">
+        <TextBlock Text="Add item" Style="{StaticResource Heading}" />
+        <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,0,0,16"
+                   Text="Appears on the till straight away, on sale by default." />
+
+        <TextBlock Text="NAME" Style="{StaticResource Label}" />
+        <TextBox x:Name="NameBox" FontSize="16" Margin="0,0,0,12" />
+
+        <TextBlock Text="PRICE (kr)" Style="{StaticResource Label}" />
+        <TextBox x:Name="PriceBox" FontSize="16" Margin="0,0,0,12" />
+
+        <TextBlock Text="CATEGORY (optional)" Style="{StaticResource Label}" />
+        <TextBox x:Name="CategoryBox" FontSize="16" Margin="0,0,0,12" />
+
+        <TextBlock Text="KEYBOARD SHORTCUT (optional, one letter)" Style="{StaticResource Label}" />
+        <TextBox x:Name="ShortcutBox" FontSize="16" MaxLength="1" />
+
+        <TextBlock x:Name="Problem" Foreground="{StaticResource Bad}" TextWrapping="Wrap"
+                   Margin="0,12,0,0" Visibility="Collapsed" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Cancel" IsCancel="True" Margin="0,0,8,0" MinWidth="100" />
+            <Button Content="Add" IsDefault="True" MinWidth="120"
+                    Style="{StaticResource PrimaryButton}" Click="Add_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>
